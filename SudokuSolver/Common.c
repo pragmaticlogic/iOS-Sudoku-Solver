@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "Common.h"
 
-const int boundingBoxTreshhold = 30;
+const int boundingBoxTreshhold = 5;
 
 IplImage *rotateImage(const IplImage *img, int angle) 
 {
