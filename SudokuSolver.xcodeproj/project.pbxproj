@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		03BB31A614A89A4300D42EDC /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BB31A514A89A4300D42EDC /* libstdc++.dylib */; };
-		03BB31E314A89EB100D42EDC /* liblept.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BB31E114A89EB100D42EDC /* liblept.a */; };
-		03BB31E414A89EB100D42EDC /* libtesseract_all.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03BB31E214A89EB100D42EDC /* libtesseract_all.a */; };
 		03D14052148DFFFC00A78781 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D14051148DFFFC00A78781 /* UIKit.framework */; };
 		03D14054148DFFFC00A78781 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D14053148DFFFC00A78781 /* Foundation.framework */; };
 		03D14056148DFFFC00A78781 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D14055148DFFFC00A78781 /* CoreGraphics.framework */; };
@@ -71,8 +69,6 @@
 				03D14054148DFFFC00A78781 /* Foundation.framework in Frameworks */,
 				03D14056148DFFFC00A78781 /* CoreGraphics.framework in Frameworks */,
 				03D1406D148E00D500A78781 /* OpenCV.framework in Frameworks */,
-				03BB31E314A89EB100D42EDC /* liblept.a in Frameworks */,
-				03BB31E414A89EB100D42EDC /* libtesseract_all.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
