@@ -15,8 +15,6 @@ extern "C" {
 }
 #endif
 
-#include "baseapi.h"
-
 @implementation PictureViewController
 
 @synthesize imageView;
@@ -118,66 +116,15 @@ extern "C" {
 
 #pragma mark -
 #pragma mark Image Processsing
-- (void) startTesseract
-{
-	//code from http://robertcarlsen.net/2009/12/06/ocr-on-iphone-demo-1043
-    
-	NSString *dataPath = [[self applicationDocumentsDirectory] stringByAppendingPathComponent:@"tessdata"];
-	/*
-	 Set up the data in the docs dir
-	 want to copy the data to the documents folder if it doesn't already exist
-	 */
-	NSFileManager *fileManager = [NSFileManager defaultManager];
-	// If the expected store doesn't exist, copy the default store.
-	if (![fileManager fileExistsAtPath:dataPath]) {
-		// get the path to the app bundle (with the tessdata dir)
-		NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
-		NSString *tessdataPath = [bundlePath stringByAppendingPathComponent:@"tessdata"];
-		if (tessdataPath) {
-			[fileManager copyItemAtPath:tessdataPath toPath:dataPath error:NULL];
-		}
-	}
-	
-	NSString *dataPathWithSlash = [[self applicationDocumentsDirectory] stringByAppendingString:@"/"];
-	setenv("TESSDATA_PREFIX", [dataPathWithSlash UTF8String], 1);
-	
-	// init the tesseract engine.
-	tess = new tesseract::TessBaseAPI();
-	
-	tess->Init([dataPath cStringUsingEncoding:NSUTF8StringEncoding], "eng"); 
-	
-	
-}
 
-- (NSString *) ocrImage: (UIImage *) uiImage
-{
-	
-	//code from http://robertcarlsen.net/2009/12/06/ocr-on-iphone-demo-1043
-	
-	CGSize imageSize = [uiImage size];
-	double bytes_per_line	= CGImageGetBytesPerRow([uiImage CGImage]);
-	double bytes_per_pixel	= CGImageGetBitsPerPixel([uiImage CGImage]) / 8.0;
-	
-	CFDataRef data = CGDataProviderCopyData(CGImageGetDataProvider([uiImage CGImage]));
-	const UInt8 *imageData = CFDataGetBytePtr(data);
-	
-	// this could take a while. maybe needs to happen asynchronously.
-	char* text = tess->TesseractRect(imageData,(int)bytes_per_pixel,(int)bytes_per_line, 0, 0,(int) imageSize.height,(int) imageSize.width);
-	
-	// Do something useful with the text!
-	NSLog(@"Converted text: %@",[NSString stringWithCString:text encoding:NSUTF8StringEncoding]);
-    
-	return [NSString stringWithCString:text encoding:NSUTF8StringEncoding];
-}
+
 
 - (IBAction)launchOCR:(id)sender
 {
 
 }
 
-- (void)dealloc 
-{
-    tess->End(); // shutdown tesseract
+- (void)dealloc {
 }
 
 

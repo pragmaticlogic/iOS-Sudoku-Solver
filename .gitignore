@@ -1,1 +1,28 @@
-# xcode noisebuild/**.pbxuser*.mode1v3*.mode2v3# osx noise.DS_Storeprofile.svnproject.xcworkspacexcuserdata
+# osx noise
+.DS_Store
+profile
+*.swp
+# xcode noise
+*.pbxuser
+*.perspective 
+*.perspectivev3
+*.mode1v3
+*.mode2v3
+*.pyc 
+*~.nib/
+build/*
+build/
+xcuserdata
+# Textmate - if you build your xcode projects with it
+*.tm_build_errors
+# old skool
+.svn
+
+# Subfolders
+/DerivedData/
+/Temp/
+/Old/
+/Docs/
+/Profiles/
+#other
+/PSDs/

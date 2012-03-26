@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-//#import <OpenCV/opencv2/imgproc/imgproc_c.h>
+#import <OpenCV/opencv2/imgproc/imgproc_c.h>
 
 @interface UIImage (Additions)
 

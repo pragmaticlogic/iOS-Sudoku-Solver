@@ -24,12 +24,12 @@
 		03D14090148E183100A78781 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D1408F148E183100A78781 /* UIImage+Additions.m */; };
 		03D14097148E5E2800A78781 /* Common.c in Sources */ = {isa = PBXBuildFile; fileRef = 03D14096148E5E2800A78781 /* Common.c */; };
 		03D140B31490BF4A00A78781 /* sudoku1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03D140B21490BF4900A78781 /* sudoku1.jpg */; };
+		AFCDBF06152031190028373E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF05152031190028373E /* AVFoundation.framework */; };
+		AFCDBF08152031740028373E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF07152031740028373E /* CoreVideo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		03BB31A514A89A4300D42EDC /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
-		03BB31E114A89EB100D42EDC /* liblept.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblept.a; path = SudokuSolver/dependencies/lib/liblept.a; sourceTree = "<group>"; };
-		03BB31E214A89EB100D42EDC /* libtesseract_all.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libtesseract_all.a; path = SudokuSolver/dependencies/lib/libtesseract_all.a; sourceTree = "<group>"; };
 		03D1404D148DFFFB00A78781 /* SudokuSolver.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SudokuSolver.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03D14051148DFFFC00A78781 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		03D14053148DFFFC00A78781 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -53,6 +53,8 @@
 		03D14096148E5E2800A78781 /* Common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Common.c; sourceTree = "<group>"; };
 		03D14098148E5E3900A78781 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		03D140B21490BF4900A78781 /* sudoku1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sudoku1.jpg; sourceTree = "<group>"; };
+		AFCDBF05152031190028373E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		AFCDBF07152031740028373E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFCDBF08152031740028373E /* CoreVideo.framework in Frameworks */,
+				AFCDBF06152031190028373E /* AVFoundation.framework in Frameworks */,
 				03BB31A614A89A4300D42EDC /* libstdc++.dylib in Frameworks */,
 				03D1408A148E0F2500A78781 /* libz.dylib in Frameworks */,
 				03D14088148E0F1900A78781 /* CoreMedia.framework in Frameworks */,
@@ -95,8 +99,8 @@
 		03D14050148DFFFC00A78781 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				03BB31E114A89EB100D42EDC /* liblept.a */,
-				03BB31E214A89EB100D42EDC /* libtesseract_all.a */,
+				AFCDBF07152031740028373E /* CoreVideo.framework */,
+				AFCDBF05152031190028373E /* AVFoundation.framework */,
 				03BB31A514A89A4300D42EDC /* libstdc++.dylib */,
 				03D14087148E0F1900A78781 /* CoreMedia.framework */,
 				03D14085148E0F1100A78781 /* ImageIO.framework */,
@@ -306,11 +310,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "SudokuSolver/SudokuSolver-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/SudokuSolver/dependencies/lib\"",
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -330,11 +330,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "SudokuSolver/SudokuSolver-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/SudokuSolver/dependencies/lib\"",
-				);
+				LIBRARY_SEARCH_PATHS = "";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
