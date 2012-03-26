@@ -10,4 +10,5 @@
 
 -(id)initWithImage:(UIImage *)image;
 - (UIImage *)binarizeImage;
+- (UIImage *)normalizeImageRotation;
 @end

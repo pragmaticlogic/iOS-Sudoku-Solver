@@ -46,9 +46,7 @@ int testSudoku[9][9] = {
 
     
     //IplImage *img_rgb = [self.imageView.image IplImage];
-    
 //    IplImage *im_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
-//    cvCvtColor(img_rgb,im_gray,CV_RGB2GRAY);
         
     CvMemStorage* storage = cvCreateMemStorage(0);
     CvSeq* lines = 0;
@@ -63,8 +61,6 @@ int testSudoku[9][9] = {
 
     //convert to RGB
     //cvCvtColor( dst, color_dst, CV_GRAY2RGB);
-    //self.imageView.image = [UIImage imageFromIplImage:color_dst];
-    //return;
     
     
     //find lines
@@ -104,6 +100,7 @@ int testSudoku[9][9] = {
     
     self.imageProcessor = [[SSImageProcessor alloc] initWithImage:self.imageView.image];
     self.imageView.image = [_imageProcessor binarizeImage];
+    self.imageView.image = [_imageProcessor normalizeImageRotation];
     //[self detectLines];
     //SolveSudoku(testSudoku);
 }

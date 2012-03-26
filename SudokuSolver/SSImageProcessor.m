@@ -58,4 +58,9 @@ extern "C" {
     return _image;
 }
 
+- (UIImage *)normalizeImageRotation {
+    IplImage *img = [_image IplImage];
+    img = rotateImage(img, -15);
+    return [UIImage imageFromIplImage:img];
+}
 @end
