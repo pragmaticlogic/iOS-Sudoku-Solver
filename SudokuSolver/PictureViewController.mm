@@ -7,8 +7,7 @@
 //
 
 #import "PictureViewController.h"
-#import "UIImage+Additions.h"
-
+#import "SSImageProcessor.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,43 +29,37 @@ int testSudoku[9][9] = {
     {0,4,0,0,0,0,0,0,7},
     {0,0,7,0,0,0,3,0,0}};
 
+@interface PictureViewController ()
+
+@property (nonatomic, retain) SSImageProcessor *imageProcessor;
+
+@end
 @implementation PictureViewController
 
 @synthesize imageView;
-
+@synthesize imageProcessor = _imageProcessor;
 
 - (void)detectLines {
     assert(self.imageView.image);
 
     IplImage* dst = 0;
-    IplImage* color_dst = 0;
+
     
-    IplImage *img_rgb = [self.imageView.image IplImage];
+    //IplImage *img_rgb = [self.imageView.image IplImage];
     
-    IplImage *im_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
-    cvCvtColor(img_rgb,im_gray,CV_RGB2GRAY);
-    
-    IplImage* im_bw = cvCreateImage(cvGetSize(im_gray),IPL_DEPTH_8U,1);
-    //cvAdaptiveThreshold(im_gray, im_bw, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 25, 0);
-    AdaptiveThreshold(im_gray, im_bw, 11);
-    
+//    IplImage *im_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
+//    cvCvtColor(img_rgb,im_gray,CV_RGB2GRAY);
+        
     CvMemStorage* storage = cvCreateMemStorage(0);
     CvSeq* lines = 0;
     int i = 0;
     
-    dst = cvCreateImage( cvGetSize(im_bw), 8, 1);
-    color_dst = cvCreateImage( cvGetSize(im_bw), 8, 3);
-    
-    
-    //test
-    cvCvtColor(im_bw, color_dst, CV_GRAY2RGB);
-    //color_dst = rotateImage(color_dst, 15);
-    self.imageView.image = [UIImage imageFromIplImage:color_dst];
+    //dst = cvCreateImage( cvGetSize(im_bw), IPL_DEPTH_8U, 1);
     return;
     
     
     //detect endges
-    cvCanny( im_bw, dst, 50, 200, 3 );
+    //cvCanny( im_bw, dst, 50, 200, 3 );
 
     //convert to RGB
     //cvCvtColor( dst, color_dst, CV_GRAY2RGB);
@@ -86,22 +79,20 @@ int testSudoku[9][9] = {
         if (tempAngle > - 30 && tempAngle < 30 && imageRotationAngle == 0) {
             imageRotationAngle = tempAngle;
         }
-        cvLine( img_rgb, line[0], line[1], CV_RGB(255,255,0), 1, CV_AA, 0 );
+        //cvLine( img_rgb, line[0], line[1], CV_RGB(255,255,0), 1, CV_AA, 0 );
     }
     
     //img_rgb = rotateImage(img_rgb, imageRotationAngle);
     
     //detect borders
-    CvPoint  box[2];    
-    detectSudokuBoundingBox(im_bw, box);
+    //CvPoint  box[2];    
+    //detectSudokuBoundingBox(im_bw, box);
 
-    cvRectangle(img_rgb, box[0], box[1], CV_RGB(0,255,255), 6, CV_AA, 0);
+    //cvRectangle(img_rgb, box[0], box[1], CV_RGB(0,255,255), 6, CV_AA, 0);
     
-    self.imageView.image = [UIImage imageFromIplImage:img_rgb];
+    //self.imageView.image = [UIImage imageFromIplImage:img_rgb];
     cvReleaseMemStorage(&storage);
-    cvReleaseImage(&im_bw);
     cvReleaseImage(&dst);
-    cvReleaseImage(&color_dst);
 }
 
 
@@ -109,25 +100,20 @@ int testSudoku[9][9] = {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.imageView.image = [UIImage imageNamed:@"1.jpg"];
-    [self detectLines];
+    self.imageView.image = [UIImage imageNamed:@"sudoku1.jpg"];
+    
+    self.imageProcessor = [[SSImageProcessor alloc] initWithImage:self.imageView.image];
+    self.imageView.image = [_imageProcessor binarizeImage];
+    //[self detectLines];
     //SolveSudoku(testSudoku);
 }
 
 
 
-#pragma mark -
-#pragma mark Image Processsing
+#pragma mark - Image Processsing
 
 - (IBAction)launchOCR:(id)sender
 {
 
 }
-
-- (void)dealloc {
-}
-
-
-
-
 @end
