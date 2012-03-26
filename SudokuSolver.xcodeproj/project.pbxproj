@@ -26,6 +26,7 @@
 		03D140B31490BF4A00A78781 /* sudoku1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03D140B21490BF4900A78781 /* sudoku1.jpg */; };
 		AFCDBF06152031190028373E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF05152031190028373E /* AVFoundation.framework */; };
 		AFCDBF08152031740028373E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF07152031740028373E /* CoreVideo.framework */; };
+		AFCDBF0C152033E70028373E /* SSSolver.c in Sources */ = {isa = PBXBuildFile; fileRef = AFCDBF0B152033E70028373E /* SSSolver.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,8 @@
 		03D140B21490BF4900A78781 /* sudoku1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sudoku1.jpg; sourceTree = "<group>"; };
 		AFCDBF05152031190028373E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AFCDBF07152031740028373E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		AFCDBF0A152033D90028373E /* SSSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSSolver.h; sourceTree = "<group>"; };
+		AFCDBF0B152033E70028373E /* SSSolver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SSSolver.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,9 +125,6 @@
 				03D14060148DFFFC00A78781 /* AppDelegate.h */,
 				03D14061148DFFFC00A78781 /* AppDelegate.mm */,
 				03D14058148DFFFC00A78781 /* Supporting Files */,
-				03D1406F148E013900A78781 /* PictureViewController.h */,
-				03D14070148E013900A78781 /* PictureViewController.mm */,
-				03D14071148E013A00A78781 /* PictureViewController.xib */,
 			);
 			path = SudokuSolver;
 			sourceTree = "<group>";
@@ -160,11 +160,24 @@
 		03D14095148E5CD900A78781 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				AFCDBF09152033220028373E /* ViewConrtollers */,
 				03D1408D148E17FE00A78781 /* Categories */,
 				03D14098148E5E3900A78781 /* Common.h */,
 				03D14096148E5E2800A78781 /* Common.c */,
+				AFCDBF0A152033D90028373E /* SSSolver.h */,
+				AFCDBF0B152033E70028373E /* SSSolver.c */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		AFCDBF09152033220028373E /* ViewConrtollers */ = {
+			isa = PBXGroup;
+			children = (
+				03D1406F148E013900A78781 /* PictureViewController.h */,
+				03D14070148E013900A78781 /* PictureViewController.mm */,
+				03D14071148E013A00A78781 /* PictureViewController.xib */,
+			);
+			name = ViewConrtollers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +248,7 @@
 				03D14072148E013A00A78781 /* PictureViewController.mm in Sources */,
 				03D14090148E183100A78781 /* UIImage+Additions.m in Sources */,
 				03D14097148E5E2800A78781 /* Common.c in Sources */,
+				AFCDBF0C152033E70028373E /* SSSolver.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

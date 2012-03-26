@@ -7,11 +7,9 @@
 //
 
 
-#import "UIImage+Additions.h"
-
 @interface PictureViewController : UIViewController
-@property (nonatomic, assign) IBOutlet UIImageView *imageView;
 
+@property (nonatomic, assign) IBOutlet UIImageView *imageView;
 
 - (IBAction)launchOCR:(id)sender;
 
