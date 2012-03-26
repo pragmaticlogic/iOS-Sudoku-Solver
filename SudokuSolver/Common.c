@@ -11,6 +11,27 @@
 
 const int boundingBoxTreshhold = 5;
 
+void AdaptiveThreshold(IplImage *source, IplImage *result, int size) {
+    CvScalar pixel;
+    for (int i = 0; i < source->height; i++) {
+        for (int j = 0; j < source->width; j++) {
+            int threshold = 0;
+            for (int n = i - size/2; n < i + size/2; n++) {
+                for (int m = j - size/2; m < j + size/2; m++) {
+                    if (n>=0 && m>=0 && m < source->width - size/2 && n < source->height - size/2) {
+                        pixel = cvGet2D(source, n, m);
+                        threshold += pixel.val[0];
+                    }
+                }
+            }
+            threshold /= size*size;
+            pixel = cvGet2D(source, i, j);
+            pixel.val[0] = pixel.val[0] > threshold ? 255 : 0; 
+            cvSet2D(result, i, j, pixel);
+        }
+    }
+}
+
 IplImage *rotateImage(const IplImage *img, int angle) 
 {
     IplImage *newImg;

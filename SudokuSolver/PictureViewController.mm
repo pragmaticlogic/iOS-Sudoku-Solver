@@ -34,8 +34,8 @@ int testSudoku[9][9] = {
 
 @synthesize imageView;
 
-- (void)detectLines
-{
+
+- (void)detectLines {
     assert(self.imageView.image);
 
     IplImage* dst = 0;
@@ -47,22 +47,22 @@ int testSudoku[9][9] = {
     cvCvtColor(img_rgb,im_gray,CV_RGB2GRAY);
     
     IplImage* im_bw = cvCreateImage(cvGetSize(im_gray),IPL_DEPTH_8U,1);
-    cvThreshold(im_gray, im_bw, 128, 255, CV_THRESH_BINARY | CV_THRESH_OTSU);
     //cvAdaptiveThreshold(im_gray, im_bw, 255, CV_ADAPTIVE_THRESH_GAUSSIAN_C, CV_THRESH_BINARY, 25, 0);
+    AdaptiveThreshold(im_gray, im_bw, 11);
     
     CvMemStorage* storage = cvCreateMemStorage(0);
     CvSeq* lines = 0;
     int i = 0;
     
-    dst = cvCreateImage( cvGetSize(im_bw), 8, 1 );
-    color_dst = cvCreateImage( cvGetSize(im_bw), 8, 3 );
+    dst = cvCreateImage( cvGetSize(im_bw), 8, 1);
+    color_dst = cvCreateImage( cvGetSize(im_bw), 8, 3);
     
     
     //test
-    //cvCvtColor(im_bw, color_dst, CV_GRAY2RGB);
+    cvCvtColor(im_bw, color_dst, CV_GRAY2RGB);
     //color_dst = rotateImage(color_dst, 15);
-    //self.imageView.image = [UIImage imageFromIplImage:color_dst];
-    //return;
+    self.imageView.image = [UIImage imageFromIplImage:color_dst];
+    return;
     
     
     //detect endges
@@ -107,34 +107,17 @@ int testSudoku[9][9] = {
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
-{
-    SolveSudoku(testSudoku);
-    
+- (void)viewDidLoad {
     [super viewDidLoad];
-    self.imageView.image = [UIImage imageNamed:@"sudoku1.jpg"];
-    
+    self.imageView.image = [UIImage imageNamed:@"1.jpg"];
     [self detectLines];
+    //SolveSudoku(testSudoku);
 }
 
-- (void)viewDidUnload
-{
-    [super viewDidUnload];
-}
 
-#pragma mark -
-
-- (NSString *) applicationDocumentsDirectory
-{
-	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES); 
-	NSString *documentsDirectoryPath = [paths objectAtIndex:0];
-	return documentsDirectoryPath;
-}
 
 #pragma mark -
 #pragma mark Image Processsing
-
-
 
 - (IBAction)launchOCR:(id)sender
 {
