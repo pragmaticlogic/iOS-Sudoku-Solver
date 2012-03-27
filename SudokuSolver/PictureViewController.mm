@@ -8,6 +8,7 @@
 
 #import "PictureViewController.h"
 #import "SSImageProcessor.h"
+#import "UIImage+Additions.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -29,7 +30,7 @@ int testSudoku[9][9] = {
     {0,4,0,0,0,0,0,0,7},
     {0,0,7,0,0,0,3,0,0}};
 
-@interface PictureViewController () <UIActionSheetDelegate>
+@interface PictureViewController () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, retain) SSImageProcessor *imageProcessor;
 
@@ -37,24 +38,17 @@ int testSudoku[9][9] = {
 @implementation PictureViewController
 
 @synthesize imageView;
+@synthesize toolBar;
 @synthesize imageProcessor = _imageProcessor;
 
 - (void)detectLines {
     assert(self.imageView.image);
 
     IplImage* dst = 0;
-
-    
-    //IplImage *img_rgb = [self.imageView.image IplImage];
-//    IplImage *im_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
         
     CvMemStorage* storage = cvCreateMemStorage(0);
     CvSeq* lines = 0;
     int i = 0;
-    
-    //dst = cvCreateImage( cvGetSize(im_bw), IPL_DEPTH_8U, 1);
-    return;
-    
     
     //detect endges
     //cvCanny( im_bw, dst, 50, 200, 3 );
@@ -96,25 +90,59 @@ int testSudoku[9][9] = {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.imageView.image = [UIImage imageNamed:@"sudoku1.jpg"];
+    self.imageView.image = [UIImage imageNamed:@"1.jpg"];
     
-    self.imageProcessor = [[SSImageProcessor alloc] initWithImage:self.imageView.image];
-    self.imageView.image = [_imageProcessor binarizeImage];
-    self.imageView.image = [_imageProcessor normalizeImageRotation];
     //[self detectLines];
     //SolveSudoku(testSudoku);
 }
 
+- (void)viewDidUnload {
+    [self setToolBar:nil];
+    [super viewDidUnload];
+}
 
 
 #pragma mark - Image Processsing
 
-- (IBAction)launchOCR:(id)sender
-{
+- (IBAction)launchOCR:(id)sender {
+    self.imageProcessor = [[SSImageProcessor alloc] initWithImage:self.imageView.image];
+    self.imageView.image = [_imageProcessor binarizeImage];
+    //self.imageView.image = [_imageProcessor normalizeImageRotation];
 
 }
 
 - (IBAction)onAddPhotoTap:(id)sender {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take Photo" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"From Camera", @"From Library", nil];
+    [actionSheet showFromToolbar:self.toolBar];
 }
+
+#pragma mark - UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    UIImagePickerController *imgPickerController = [[UIImagePickerController alloc] init];
+    imgPickerController.delegate = self;
+    switch (buttonIndex) {
+        case 0:
+            imgPickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            [self presentModalViewController:imgPickerController animated:YES];
+            break;
+        case 1:
+            [self presentModalViewController:imgPickerController animated:YES];
+        default:
+            break;
+    }
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
+    UIImage *result = [info objectForKey:UIImagePickerControllerOriginalImage];    
+    result = [result scaleAndRotateImage];
+    self.imageView.image = result;
+    [picker dismissModalViewControllerAnimated:YES];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+    [picker dismissModalViewControllerAnimated:YES];
+}
+
 @end

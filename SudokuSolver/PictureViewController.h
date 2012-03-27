@@ -10,6 +10,7 @@
 @interface PictureViewController : UIViewController
 
 @property (nonatomic, assign) IBOutlet UIImageView *imageView;
+@property (unsafe_unretained, nonatomic) IBOutlet UIToolbar *toolBar;
 
 - (IBAction)launchOCR:(id)sender;
 - (IBAction)onAddPhotoTap:(id)sender;

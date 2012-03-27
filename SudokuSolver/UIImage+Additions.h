@@ -12,6 +12,7 @@
 @interface UIImage (Additions)
 
 - (IplImage *)IplImage;
+- (UIImage *)scaleAndRotateImage;
 + (UIImage *)imageFromIplImage:(IplImage *)image;
 
 @end
