@@ -12,6 +12,7 @@
 @property (nonatomic, assign) IBOutlet UIImageView *imageView;
 
 - (IBAction)launchOCR:(id)sender;
+- (IBAction)onAddPhotoTap:(id)sender;
 
 
 @end

@@ -29,7 +29,7 @@ int testSudoku[9][9] = {
     {0,4,0,0,0,0,0,0,7},
     {0,0,7,0,0,0,3,0,0}};
 
-@interface PictureViewController ()
+@interface PictureViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, retain) SSImageProcessor *imageProcessor;
 
@@ -112,5 +112,9 @@ int testSudoku[9][9] = {
 - (IBAction)launchOCR:(id)sender
 {
 
+}
+
+- (IBAction)onAddPhotoTap:(id)sender {
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take Photo" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"From Camera", @"From Library", nil];
 }
 @end
