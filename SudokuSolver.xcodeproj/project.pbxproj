@@ -23,14 +23,11 @@
 		03D1408A148E0F2500A78781 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D14089148E0F2500A78781 /* libz.dylib */; };
 		03D14090148E183100A78781 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D1408F148E183100A78781 /* UIImage+Additions.m */; };
 		03D14097148E5E2800A78781 /* Common.c in Sources */ = {isa = PBXBuildFile; fileRef = 03D14096148E5E2800A78781 /* Common.c */; };
-		03D140B31490BF4A00A78781 /* sudoku1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 03D140B21490BF4900A78781 /* sudoku1.jpg */; };
+		AF9C2314152323DC00120079 /* test1.JPG in Resources */ = {isa = PBXBuildFile; fileRef = AF9C2313152323DC00120079 /* test1.JPG */; };
 		AFCDBF06152031190028373E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF05152031190028373E /* AVFoundation.framework */; };
 		AFCDBF08152031740028373E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF07152031740028373E /* CoreVideo.framework */; };
 		AFCDBF0C152033E70028373E /* SSSolver.c in Sources */ = {isa = PBXBuildFile; fileRef = AFCDBF0B152033E70028373E /* SSSolver.c */; };
-		AFCDBF1615205D9D0028373E /* test3.png in Resources */ = {isa = PBXBuildFile; fileRef = AFCDBF1515205D9D0028373E /* test3.png */; };
-		AFCDBF1C15206C500028373E /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AFCDBF1B15206C500028373E /* 2.jpg */; };
 		AFCDBF1E15206C710028373E /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AFCDBF1D15206C710028373E /* 1.jpg */; };
-		AFCDBF201520705D0028373E /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AFCDBF1F1520705D0028373E /* 3.jpg */; };
 		AFCDBF2B15208AF20028373E /* SSImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = AFCDBF2A15208AF20028373E /* SSImageProcessor.m */; };
 /* End PBXBuildFile section */
 
@@ -58,15 +55,12 @@
 		03D1408F148E183100A78781 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
 		03D14096148E5E2800A78781 /* Common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Common.c; sourceTree = "<group>"; };
 		03D14098148E5E3900A78781 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		03D140B21490BF4900A78781 /* sudoku1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = sudoku1.jpg; sourceTree = "<group>"; };
+		AF9C2313152323DC00120079 /* test1.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test1.JPG; sourceTree = "<group>"; };
 		AFCDBF05152031190028373E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AFCDBF07152031740028373E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		AFCDBF0A152033D90028373E /* SSSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSSolver.h; sourceTree = "<group>"; };
 		AFCDBF0B152033E70028373E /* SSSolver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SSSolver.c; sourceTree = "<group>"; };
-		AFCDBF1515205D9D0028373E /* test3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = test3.png; sourceTree = "<group>"; };
-		AFCDBF1B15206C500028373E /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		AFCDBF1D15206C710028373E /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
-		AFCDBF1F1520705D0028373E /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
 		AFCDBF2915208AF20028373E /* SSImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSImageProcessor.h; sourceTree = "<group>"; };
 		AFCDBF2A15208AF20028373E /* SSImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSImageProcessor.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -154,11 +148,8 @@
 		03D14074148E0B6B00A78781 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				AFCDBF1515205D9D0028373E /* test3.png */,
-				03D140B21490BF4900A78781 /* sudoku1.jpg */,
 				AFCDBF1D15206C710028373E /* 1.jpg */,
-				AFCDBF1B15206C500028373E /* 2.jpg */,
-				AFCDBF1F1520705D0028373E /* 3.jpg */,
+				AF9C2313152323DC00120079 /* test1.JPG */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -249,11 +240,8 @@
 			files = (
 				03D1405C148DFFFC00A78781 /* InfoPlist.strings in Resources */,
 				03D14073148E013A00A78781 /* PictureViewController.xib in Resources */,
-				03D140B31490BF4A00A78781 /* sudoku1.jpg in Resources */,
-				AFCDBF1615205D9D0028373E /* test3.png in Resources */,
-				AFCDBF1C15206C500028373E /* 2.jpg in Resources */,
 				AFCDBF1E15206C710028373E /* 1.jpg in Resources */,
-				AFCDBF201520705D0028373E /* 3.jpg in Resources */,
+				AF9C2314152323DC00120079 /* test1.JPG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

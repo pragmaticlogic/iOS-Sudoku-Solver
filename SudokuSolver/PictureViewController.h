@@ -12,8 +12,11 @@
 @property (nonatomic, assign) IBOutlet UIImageView *imageView;
 @property (unsafe_unretained, nonatomic) IBOutlet UIToolbar *toolBar;
 
-- (IBAction)launchOCR:(id)sender;
+- (IBAction)onBinarizeButtonTap:(id)sender;
 - (IBAction)onAddPhotoTap:(id)sender;
+- (IBAction)onRotateButtonTap:(id)sender;
+- (IBAction)onDetectRectangleButtonTap:(id)sender;
+
 
 
 @end

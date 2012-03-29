@@ -72,15 +72,6 @@ int testSudoku[9][9] = {
         //cvLine( img_rgb, line[0], line[1], CV_RGB(255,255,0), 1, CV_AA, 0 );
     }
     
-    //img_rgb = rotateImage(img_rgb, imageRotationAngle);
-    
-    //detect borders
-    //CvPoint  box[2];    
-    //detectSudokuBoundingBox(im_bw, box);
-
-    //cvRectangle(img_rgb, box[0], box[1], CV_RGB(0,255,255), 6, CV_AA, 0);
-    
-    //self.imageView.image = [UIImage imageFromIplImage:img_rgb];
     cvReleaseMemStorage(&storage);
     cvReleaseImage(&dst);
 }
@@ -90,7 +81,8 @@ int testSudoku[9][9] = {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.imageView.image = [UIImage imageNamed:@"1.jpg"];
+    self.imageView.image = [[UIImage imageNamed:@"test1.jpg"] scaleAndRotateImage];
+    
     
     //[self detectLines];
     //SolveSudoku(testSudoku);
@@ -104,16 +96,24 @@ int testSudoku[9][9] = {
 
 #pragma mark - Image Processsing
 
-- (IBAction)launchOCR:(id)sender {
+- (IBAction)onBinarizeButtonTap:(id)sender {
     self.imageProcessor = [[SSImageProcessor alloc] initWithImage:self.imageView.image];
-    self.imageView.image = [_imageProcessor binarizeImage];
-    //self.imageView.image = [_imageProcessor normalizeImageRotation];
 
+    self.imageView.image = [_imageProcessor binarizeImage];
+    //detect borders
 }
 
 - (IBAction)onAddPhotoTap:(id)sender {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take Photo" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"From Camera", @"From Library", nil];
     [actionSheet showFromToolbar:self.toolBar];
+}
+
+- (IBAction)onRotateButtonTap:(id)sender {
+    self.imageView.image = [_imageProcessor normalizeImageRotation];
+}
+
+- (IBAction)onDetectRectangleButtonTap:(id)sender {
+    self.imageView.image = [_imageProcessor detectBoundingRectangle];
 }
 
 #pragma mark - UIActionSheetDelegate

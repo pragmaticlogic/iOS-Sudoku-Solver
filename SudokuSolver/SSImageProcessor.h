@@ -11,4 +11,6 @@
 -(id)initWithImage:(UIImage *)image;
 - (UIImage *)binarizeImage;
 - (UIImage *)normalizeImageRotation;
+- (UIImage *)detectBoundingRectangle;
+
 @end
