@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "Common.h"
 
-const int boundingBoxTreshhold = 5;
+const int boundingBoxTreshhold = 5; //if count of black pixels in line is less than this value, the line is marked as the border
 
 void AdaptiveThreshold(IplImage *source, IplImage *result, int size) {
     CvScalar pixel;
@@ -57,6 +57,7 @@ IplImage *rotateImage(const IplImage *img, int angle)
     newImg = cvCreateImage(cvSize(newWidth, newHeight), img->depth,
                            img->nChannels);
     cvSetZero(newImg);
+    
     rectX = (int) ((newWidth - img->width) / 2);
     rectY = (int) ((newHeight - img->height) / 2);
     
@@ -82,7 +83,7 @@ IplImage *rotateImage(const IplImage *img, int angle)
     center.y = yPos;
     
     cv2DRotationMatrix(center, angle, 1.0, mapMatrix);
-    cvWarpAffine(newImg, rotatedImg, mapMatrix, CV_INTER_LINEAR | CV_WARP_FILL_OUTLIERS, cvScalarAll(0));
+    cvWarpAffine(newImg, rotatedImg, mapMatrix, CV_INTER_LINEAR | CV_WARP_FILL_OUTLIERS, cvScalarAll(255.f));
     return rotatedImg;
 }
 

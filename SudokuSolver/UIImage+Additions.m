@@ -54,7 +54,7 @@
 }
 
 - (UIImage *)scaleAndRotateImage {
-    int kMaxResolution = 320; // Or whatever
+    int kMaxResolution = 500; // Or whatever
     CGImageRef imgRef = self.CGImage;
     
     CGFloat width = CGImageGetWidth(imgRef);

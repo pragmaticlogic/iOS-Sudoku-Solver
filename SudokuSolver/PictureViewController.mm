@@ -81,9 +81,7 @@ int testSudoku[9][9] = {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.imageView.image = [[UIImage imageNamed:@"test1.jpg"] scaleAndRotateImage];
-    
-    
+    self.imageView.image = [[UIImage imageNamed:@"test1.JPG"] scaleAndRotateImage];
     //[self detectLines];
     //SolveSudoku(testSudoku);
 }
@@ -98,9 +96,7 @@ int testSudoku[9][9] = {
 
 - (IBAction)onBinarizeButtonTap:(id)sender {
     self.imageProcessor = [[SSImageProcessor alloc] initWithImage:self.imageView.image];
-
-    self.imageView.image = [_imageProcessor binarizeImage];
-    //detect borders
+    self.imageView.image = [_imageProcessor binarizeImage:self.imageView.image];
 }
 
 - (IBAction)onAddPhotoTap:(id)sender {
@@ -109,11 +105,11 @@ int testSudoku[9][9] = {
 }
 
 - (IBAction)onRotateButtonTap:(id)sender {
-    self.imageView.image = [_imageProcessor normalizeImageRotation];
+    self.imageView.image = [self.imageProcessor normalizeImageRotation:self.imageView.image];
 }
 
 - (IBAction)onDetectRectangleButtonTap:(id)sender {
-    self.imageView.image = [_imageProcessor detectBoundingRectangle];
+    self.imageView.image = [self.imageProcessor detectBoundingRectangle:self.imageView.image];
 }
 
 #pragma mark - UIActionSheetDelegate

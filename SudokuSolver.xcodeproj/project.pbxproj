@@ -24,6 +24,7 @@
 		03D14090148E183100A78781 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D1408F148E183100A78781 /* UIImage+Additions.m */; };
 		03D14097148E5E2800A78781 /* Common.c in Sources */ = {isa = PBXBuildFile; fileRef = 03D14096148E5E2800A78781 /* Common.c */; };
 		AF9C2314152323DC00120079 /* test1.JPG in Resources */ = {isa = PBXBuildFile; fileRef = AF9C2313152323DC00120079 /* test1.JPG */; };
+		AFA9CD93152864EF00FEAAD2 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AFA9CD92152864EF00FEAAD2 /* 2.jpg */; };
 		AFCDBF06152031190028373E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF05152031190028373E /* AVFoundation.framework */; };
 		AFCDBF08152031740028373E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF07152031740028373E /* CoreVideo.framework */; };
 		AFCDBF0C152033E70028373E /* SSSolver.c in Sources */ = {isa = PBXBuildFile; fileRef = AFCDBF0B152033E70028373E /* SSSolver.c */; };
@@ -56,6 +57,7 @@
 		03D14096148E5E2800A78781 /* Common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Common.c; sourceTree = "<group>"; };
 		03D14098148E5E3900A78781 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		AF9C2313152323DC00120079 /* test1.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = test1.JPG; sourceTree = "<group>"; };
+		AFA9CD92152864EF00FEAAD2 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
 		AFCDBF05152031190028373E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AFCDBF07152031740028373E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		AFCDBF0A152033D90028373E /* SSSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSSolver.h; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 			children = (
 				AFCDBF1D15206C710028373E /* 1.jpg */,
 				AF9C2313152323DC00120079 /* test1.JPG */,
+				AFA9CD92152864EF00FEAAD2 /* 2.jpg */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				03D14073148E013A00A78781 /* PictureViewController.xib in Resources */,
 				AFCDBF1E15206C710028373E /* 1.jpg in Resources */,
 				AF9C2314152323DC00120079 /* test1.JPG in Resources */,
+				AFA9CD93152864EF00FEAAD2 /* 2.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

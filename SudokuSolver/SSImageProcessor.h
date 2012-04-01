@@ -9,8 +9,8 @@
 @interface SSImageProcessor : NSObject
 
 -(id)initWithImage:(UIImage *)image;
-- (UIImage *)binarizeImage;
-- (UIImage *)normalizeImageRotation;
-- (UIImage *)detectBoundingRectangle;
+- (UIImage *)binarizeImage:(UIImage *)source;
+- (UIImage *)normalizeImageRotation:(UIImage *)source;
+- (UIImage *)detectBoundingRectangle:(UIImage *)source;
 
 @end
