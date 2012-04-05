@@ -14,6 +14,10 @@ const int boundingBoxTreshhold = 2; //if count of black pixels in line is less t
 void AdaptiveThreshold(IplImage *source, IplImage *result, int size) {
     CvScalar pixel;
     
+    IplImage *img_gray = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
+    cvCvtColor(source, img_gray, CV_RGB2GRAY);
+
+    
 //    IplImage *img_hsv = cvCreateImage(cvSize(source->width, source->height), source->depth, 3);
 //    cvCvtColor( source,img_hsv,CV_RGB2HSV);
 //    
@@ -56,19 +60,19 @@ void AdaptiveThreshold(IplImage *source, IplImage *result, int size) {
 
     
     
-    for (int i = 0; i < source->height; i++) {
-        for (int j = 0; j < source->width; j++) {
+    for (int i = 0; i < img_gray->height; i++) {
+        for (int j = 0; j < img_gray->width; j++) {
             int threshold = 0;
             for (int n = i - size/2; n < i + size/2; n++) {
                 for (int m = j - size/2; m < j + size/2; m++) {
-                    if (n>=0 && m>=0 && m < source->width - size/2 && n < source->height - size/2) {
-                        pixel = cvGet2D(source, n, m);
+                    if (n>=0 && m>=0 && m < img_gray->width - size/2 && n < img_gray->height - size/2) {
+                        pixel = cvGet2D(img_gray, n, m);
                         threshold += pixel.val[0];
                     }
                 }
             }
             threshold /= size*size;
-            pixel = cvGet2D(source, i, j);
+            pixel = cvGet2D(img_gray, i, j);
             pixel.val[0] = pixel.val[0] > threshold ? 255 : 0; 
             cvSet2D(result, i, j, pixel);
         }

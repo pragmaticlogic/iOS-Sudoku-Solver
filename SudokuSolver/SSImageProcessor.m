@@ -40,10 +40,8 @@ extern "C" {
 
 - (UIImage *)binarizeImage:(UIImage *)source {
     IplImage *img_rgb = [source IplImage];
-    IplImage *img_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
-    cvCvtColor(img_rgb, img_gray, CV_RGB2GRAY);
-    IplImage* im_bw = cvCreateImage(cvGetSize(img_gray),IPL_DEPTH_8U,1);
-    AdaptiveThreshold(img_gray, im_bw, 11);
+    IplImage* im_bw = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
+    AdaptiveThreshold(img_rgb, im_bw, 11);
     
     IplImage* color_dst = cvCreateImage( cvGetSize(im_bw), IPL_DEPTH_8U, 3);
     cvCvtColor(im_bw, color_dst, CV_GRAY2RGB);
