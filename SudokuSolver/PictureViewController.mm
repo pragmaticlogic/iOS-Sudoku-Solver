@@ -41,41 +41,6 @@ int testSudoku[9][9] = {
 @synthesize toolBar;
 @synthesize imageProcessor = _imageProcessor;
 
-- (void)detectLines {
-    assert(self.imageView.image);
-
-    IplImage* dst = 0;
-        
-    CvMemStorage* storage = cvCreateMemStorage(0);
-    CvSeq* lines = 0;
-    int i = 0;
-    
-    //detect endges
-    //cvCanny( im_bw, dst, 50, 200, 3 );
-
-    //convert to RGB
-    //cvCvtColor( dst, color_dst, CV_GRAY2RGB);
-    
-    
-    //find lines
-    lines = cvHoughLines2( dst, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 50, 50, 10);
-    
-    double imageRotationAngle = 0;
-    
-    //draw the lines
-    for( i = 0; i < lines->total; i++ ){
-        CvPoint* line = (CvPoint*)cvGetSeqElem(lines, i);
-        double tempAngle = atan2(line[1].y - line[0].y, line[1].x - line[0].x) * 180.0 / CV_PI;
-        if (tempAngle > - 30 && tempAngle < 30 && imageRotationAngle == 0) {
-            imageRotationAngle = tempAngle;
-        }
-        //cvLine( img_rgb, line[0], line[1], CV_RGB(255,255,0), 1, CV_AA, 0 );
-    }
-    
-    cvReleaseMemStorage(&storage);
-    cvReleaseImage(&dst);
-}
-
 
 #pragma mark - View lifecycle
 
@@ -105,11 +70,13 @@ int testSudoku[9][9] = {
 }
 
 - (IBAction)onRotateButtonTap:(id)sender {
-    self.imageView.image = [self.imageProcessor normalizeImageRotation:self.imageView.image];
+    self.imageView.image = [self.imageProcessor rotateImage:self.imageView.image];
 }
 
 - (IBAction)onDetectRectangleButtonTap:(id)sender {
-    self.imageView.image = [self.imageProcessor detectBoundingRectangle:self.imageView.image];
+    self.imageView.image = [self.imageProcessor detectLines:self.imageView.image];
+    //self.imageView.image = [self.imageProcessor detectBoundingRectangle:self.imageView.image];
+    //self.imageView.image = [self.imageProcessor closeImage:self.imageView.image];
 }
 
 #pragma mark - UIActionSheetDelegate
