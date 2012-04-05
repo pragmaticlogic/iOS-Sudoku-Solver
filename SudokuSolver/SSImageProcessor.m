@@ -43,7 +43,7 @@ extern "C" {
     IplImage *img_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
     cvCvtColor(img_rgb, img_gray, CV_RGB2GRAY);
     IplImage* im_bw = cvCreateImage(cvGetSize(img_gray),IPL_DEPTH_8U,1);
-    AdaptiveThreshold(img_rgb, im_bw, 11);
+    AdaptiveThreshold(img_gray, im_bw, 11);
     
     IplImage* color_dst = cvCreateImage( cvGetSize(im_bw), IPL_DEPTH_8U, 3);
     cvCvtColor(im_bw, color_dst, CV_GRAY2RGB);
@@ -126,7 +126,6 @@ extern "C" {
     
     double imageRotationAngle = 0;
     
-    //find the angle
     for(int i = 0; i < lines->total; i++ ){
         CvPoint* line = (CvPoint*)cvGetSeqElem(lines, i);
         double tempAngle = atan2(line[1].y - line[0].y, line[1].x - line[0].x) * 180.0 / CV_PI;
@@ -157,28 +156,14 @@ extern "C" {
     
     lines = cvHoughLines2( dst, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 50, 50, 10);
     
-//    double imageRotationAngle = 0;
-//    
-//    //find the angle
-//    for(int i = 0; i < lines->total; i++ ){
-//        CvPoint* line = (CvPoint*)cvGetSeqElem(lines, i);
-//        double tempAngle = atan2(line[1].y - line[0].y, line[1].x - line[0].x) * 180.0 / CV_PI;
-//        if (tempAngle > - 20 && tempAngle < 20 && imageRotationAngle == 0) {
-//            imageRotationAngle = tempAngle;
-//        }
-//    }
-    //искать линии 2 раза - первый раз просто угол поворота, повернуть, потом повторить поиск
-//    img_rgb = rotateImage(img_rgb, imageRotationAngle);
     UIImage *image = [self detectBoundingRectangle:[UIImage imageFromIplImage:img_rgb]];
      
     img_rgb = [image IplImage];
-    //img_rgb = rotateImage(img_rgb, -imageRotationAngle);
     
     for(int i = 0; i < lines->total; i++ ){
         CvPoint* line = (CvPoint*)cvGetSeqElem(lines, i);
         cvLine(img_rgb, line[0], line[1], CV_RGB(255,0,255), 1, CV_AA, 0 );
     }
-
 
     cvReleaseMemStorage(&storage);
     cvReleaseImage(&dst);

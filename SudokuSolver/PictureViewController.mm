@@ -47,8 +47,6 @@ int testSudoku[9][9] = {
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.imageView.image = [[UIImage imageNamed:@"test1.JPG"] scaleAndRotateImage];
-    //[self detectLines];
-    //SolveSudoku(testSudoku);
 }
 
 - (void)viewDidUnload {
