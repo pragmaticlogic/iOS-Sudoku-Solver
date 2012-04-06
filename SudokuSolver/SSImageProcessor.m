@@ -17,7 +17,9 @@ extern "C" {
 }
 #endif
 
-@interface SSImageProcessor ()
+@interface SSImageProcessor () {
+    CvPoint sudokuFrame[2];
+}
 
 @property (nonatomic, retain) UIImage *image;
 
@@ -56,10 +58,9 @@ extern "C" {
     IplImage *img_rgb = [source IplImage];
     IplImage *img_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
     cvCvtColor(img_rgb, img_gray, CV_RGB2GRAY);
-    
-    CvPoint  box[2];    
-    detectSudokuBoundingBox(img_gray, box);    
-    cvRectangle(img_rgb, box[0], box[1], CV_RGB(0,255,0), 2, CV_AA, 0);
+      
+    detectSudokuBoundingBox(img_gray, sudokuFrame);
+    cvRectangle(img_rgb, sudokuFrame[0], sudokuFrame[1], CV_RGB(0,255,0), 2, CV_AA, 0);
     return [UIImage imageFromIplImage:img_rgb];
     //dealloc iplimages
 }
@@ -95,7 +96,6 @@ extern "C" {
                     cvGet2D(img_gray, i + 1, j).val[0] == 0.0 && 
                     cvGet2D(img_gray, i, j - 1).val[0] == 0.0 &&
                     cvGet2D(img_gray, i, j + 1).val[0] == 0.0) {
-                    //cvSet2D(img_rgb, i, j, pixel);
                     cvCircle(color_dst, cvPoint(j, i), 2, CV_RGB(255,255,0), 1, CV_AA, 0);
                 }
             }
@@ -158,8 +158,12 @@ extern "C" {
      
     img_rgb = [image IplImage];
     
-    for(int i = 0; i < lines->total; i++ ){
+    for (int i = 0; i < lines->total; i++ ){
         CvPoint* line = (CvPoint*)cvGetSeqElem(lines, i);
+        if ((line[0].y < sudokuFrame[0].y || line[1].y < sudokuFrame[0].y || line[0].y > sudokuFrame[1].y || line[1].y > sudokuFrame[1].y) ||
+            ((line[0].x < sudokuFrame[0].x || line[1].x < sudokuFrame[0].x || line[0].x > sudokuFrame[1].x || line[1].x > sudokuFrame[1].x))) {
+            continue;
+        }
         cvLine(img_rgb, line[0], line[1], CV_RGB(255,0,255), 1, CV_AA, 0 );
     }
 

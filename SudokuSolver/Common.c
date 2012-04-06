@@ -11,54 +11,55 @@
 
 const int boundingBoxTreshhold = 2; //if count of black pixels in line is less than this value, the line is marked as the border
 
+
+void DlIntegral(IplImage *source, CvMat *result) {
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            printf("%.0f ",cvGet2D(source, i, j).val[0]);
+        }
+        printf("\n");
+    }
+    printf("///////////\n"); 
+    
+    cvSet2D(result, 0, 0, cvScalarAll(cvGet2D(source, 0, 0).val[0]));
+    
+    for (int x = 1; x < source->width; x++) {
+        double sum = cvGet2D(source, x, 0).val[0] + cvGet2D(result, x-1, 0).val[0];
+        cvSet2D(result, x, 0, cvScalarAll(sum));
+    }
+        
+        for (int y = 1; y < 360/*img_hsv->height*/; y++) {
+            double sum = cvGet2D(source, 0, y).val[0] + cvGet2D(result, 0, y-1).val[0];
+            cvSet2D(result, 0, y, cvScalarAll(sum));
+        }
+       
+       for (int y = 1; y <360/*img_hsv->height*/; y++) {
+            for (int x = 1; x<source->width; x++) {
+                double sum = cvGet2D(source, x, y).val[0] + cvGet2D(result, x-1, y).val[0] +
+                cvGet2D(source, x, y-1).val[0] - cvGet2D(result, x-1, y-1).val[0];
+                cvSet2D(result, x, y, cvScalarAll(sum));
+            }
+        }
+        
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                printf("%.0f ",cvGet2D(result, i, j).val[0]);
+            }
+            printf("\n");
+        }
+
+}
 void AdaptiveThreshold(IplImage *source, IplImage *result, int size) {
     CvScalar pixel;
     
     IplImage *img_gray = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
     cvCvtColor(source, img_gray, CV_RGB2GRAY);
 
-    
-//    IplImage *img_hsv = cvCreateImage(cvSize(source->width, source->height), source->depth, 3);
-//    cvCvtColor( source,img_hsv,CV_RGB2HSV);
-//    
-//    for (int i = 0; i < 10; i++) {
-//        for (int j = 0; j < 10; j++) {
-//            printf("%.0f ",cvGet2D(img_hsv, i, j).val[2]);
-//        }
-//        printf("\n");
-//    }
-//    printf("///////////\n");
-//    
-//    CvMat *integralSum = cvCreateMat(img_hsv->width, img_hsv->height, 4);
-//        
-//    cvSet2D(integralSum, 0, 0, cvScalarAll(cvGet2D(img_hsv, 0, 0).val[2]));
-//
-//    for (int x = 1; x < img_hsv->width; x++) {
-//        double result = cvGet2D(img_hsv, x, 0).val[2] + cvGet2D(integralSum, x-1, 0).val[2];
-//        cvSet2D(integralSum, x, 0, cvScalarAll(result));
-//    }
-//    
-//    for (int y = 1; y < 360/*img_hsv->height*/; y++) {
-//        double result = cvGet2D(img_hsv, 0, y).val[2] + cvGet2D(integralSum, 0, y-1).val[2];
-//        cvSet2D(integralSum, 0, y, cvScalarAll(result));
-//    }
-//    
-//    for (int y = 1; y <360/*img_hsv->height*/; y++) {
-//        for (int x = 1; x<img_hsv->width; x++) {
-//            double sum = cvGet2D(img_hsv, x, y).val[2] + cvGet2D(integralSum, x-1, y).val[2] +
-//            cvGet2D(img_hsv, x, y-1).val[2] - cvGet2D(integralSum, x-1, y-1).val[2];
-//            cvSet2D(integralSum, x, y, cvScalarAll(sum));
-//        }
-//    }
-//    
-//    for (int i = 0; i < 10; i++) {
-//        for (int j = 0; j < 10; j++) {
-//            printf("%.0f ",cvGet2D(integralSum, i, j).val[0]);
-//        }
-//        printf("\n");
-//    }
+    //IplImage *img_hsv = cvCreateImage(cvSize(source->width, source->height), source->depth, 3);
+    //cvCvtColor( source,img_hsv,CV_RGB2HSV);
 
-    
+    //CvMat *integralSum = cvCreateMat(img_gray->width, img_gray->height, 10);
+    //DlIntegral(img_gray, integralSum);
     
     for (int i = 0; i < img_gray->height; i++) {
         for (int j = 0; j < img_gray->width; j++) {
@@ -203,7 +204,6 @@ void detectSudokuBoundingBox(IplImage *image, CvPoint box[])
     
     for (int i = image->height / 2 , j = 0; i > 0; i--, j++) 
     {
-        printf("%d\n", horizontalIndexes[i]);
         if (horizontalIndexes[i] < boundingBoxTreshhold && topBorder == 0) 
         {
             topBorder = i;
