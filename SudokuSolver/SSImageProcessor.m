@@ -71,7 +71,7 @@ extern "C" {
     IplImage *img_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
     cvCvtColor(img_rgb, img_gray, CV_RGB2GRAY);
     
-    int radius = 4;
+    int radius = 3;
     IplConvKernel* Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_RECT, NULL);
     cvErode(img_gray, img_gray, Kern, 1);
     cvDilate(img_gray, img_gray, Kern, 1);
@@ -164,12 +164,35 @@ extern "C" {
             ((line[0].x < sudokuFrame[0].x || line[1].x < sudokuFrame[0].x || line[0].x > sudokuFrame[1].x || line[1].x > sudokuFrame[1].x))) {
             continue;
         }
+        if (sqrtf(powf(line[1].x - line[0].x, 2) + powf(line[1].y - line[0].y, 2)) < img_rgb->width * 0.4) {
+            continue;
+        }
         cvLine(img_rgb, line[0], line[1], CV_RGB(255,0,255), 1, CV_AA, 0 );
     }
 
     cvReleaseMemStorage(&storage);
     cvReleaseImage(&dst);
     
-    return [UIImage imageFromIplImage:img_rgb];
+    int boxWidth = sudokuFrame[1].x - sudokuFrame[0].x;
+    int boxHeight = sudokuFrame[1].y - sudokuFrame[0].y;
+    IplImage *onlySudokuBoxImage = cvCreateImage(cvSize(boxWidth, boxHeight),IPL_DEPTH_8U,3);
+    GetSubImage(img_rgb, onlySudokuBoxImage, cvRect(sudokuFrame[0].x, sudokuFrame[0].y, boxWidth, boxHeight));
+
+    //return [UIImage imageFromIplImage:onlySudokuBoxImage];
+    
+    IplImage *stripes[9];
+    splitSudokuIntoVerticalStripes(onlySudokuBoxImage, stripes);
+
+    IplImage *squares[9][9];
+
+    for (int i = 0; i < 9; i++) {
+            splitVerticalLineIntoDigits(stripes[0], squares[i]);
+    }
+    
+    IplImage *square_rgb = cvCreateImage(cvGetSize(squares[0][3]), IPL_DEPTH_8U, 3);
+    cvCvtColor(squares[0][3], square_rgb, CV_GRAY2RGB);
+    
+    //return [self closeImage:[UIImage imageFromIplImage:square_rgb]];
+    return [UIImage imageFromIplImage:square_rgb];
 }
 @end

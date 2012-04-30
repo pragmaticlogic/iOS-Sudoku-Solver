@@ -241,3 +241,87 @@ void detectSudokuBoundingBox(IplImage *image, CvPoint box[])
     box[1] = bottomRightCorner;
     //return box;
 }
+
+void GetSubImage(IplImage *source, IplImage *dest, CvRect roiRect) {
+    cvSetImageROI(source, roiRect);
+    cvCopy(source, dest, NULL);
+    cvResetImageROI(source);
+}
+
+void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
+    IplImage *img_bw = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
+    cvCvtColor(source, img_bw, CV_RGB2GRAY);
+    
+    cvThreshold(img_bw, img_bw, 125, 0, CV_THRESH_TOZERO);
+
+    int cutThreshold = source->height * 0.3;
+    int averageRowWidth = source->width / 9 * 0.7;
+    int prevLineX = 0;
+    int currentLineLength;
+    int countOfStripes = 0;
+
+    for (int i = 0 ; i < source->width; i++) {
+        currentLineLength = 0;
+        for (int j = 0 ; j < source->height; j++) {
+            double val = cvGet2D(img_bw, j, i).val[0];
+            if (val == 0.0) {
+                currentLineLength++; 
+            }
+            //printf("%0.f ", val);
+        }
+        
+        if (currentLineLength >= cutThreshold) {
+            if (i - prevLineX < averageRowWidth) {
+                continue;
+            }
+            CvRect rect = cvRect(prevLineX, 0, i - prevLineX, source->height);
+            prevLineX = i;
+            IplImage *resultImage = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
+            GetSubImage(img_bw, resultImage, rect);
+            stripes[countOfStripes++] = resultImage;
+            if (countOfStripes >= 9) {
+                return;
+            }
+            i+=3; //to avoid one-pixel black lines
+        }
+
+    }
+        
+        //printf("\n");
+    
+}
+void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]) {
+//    IplImage *img_bw = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
+//    cvCvtColor(source, img_bw, CV_RGB2GRAY);
+
+//    cvThreshold(img_bw, img_bw, 125, 0, CV_THRESH_TOZERO);
+
+    int cutThreshold = source->width * 0.7;
+    int prevLineY = 0;
+    int currentLineLength;
+    int countOfSquares = 0;
+    
+    for (int i = 0 ; i < source->height; i++) {
+        currentLineLength = 0;
+        for (int j = 0 ; j < source->width; j++) {
+            double val = cvGet2D(source, i, j).val[0];
+            if (val == 0.0) {
+                currentLineLength++;
+            }
+            //printf("%0.f ", val);
+        }
+        if (currentLineLength >= cutThreshold) {
+            CvRect rect = cvRect(0, prevLineY, source->width, i - prevLineY);
+            prevLineY = i;
+            IplImage *resultImage = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
+            GetSubImage(source, resultImage, rect);
+            array[countOfSquares++] = resultImage;
+            if (countOfSquares >= 8) {
+                return;
+            }
+            i+=5; //to avoid one-pixel black lines
+        }
+
+        //printf("\n");
+    }
+}

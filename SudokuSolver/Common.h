@@ -14,7 +14,11 @@ typedef struct
     double r, g, b;    /* Channel intensities between 0.0 and 1.0 */
 } rgb_color;
 
-void AdaptiveThreshold(IplImage *source, IplImage *result, int size);
+void AdaptiveThreshold(IplImage *source, IplImage *dest, int size);
+void GetSubImage(IplImage *source, IplImage *dest, CvRect roiRect);
 IplImage *rotateImage(const IplImage *img, int angle);
 CvPoint intersectionBetweenLines(CvPoint p1, CvPoint p2, CvPoint p3, CvPoint p4);
 void detectSudokuBoundingBox(IplImage *image, CvPoint box[]);
+
+void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]);
+void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]);
