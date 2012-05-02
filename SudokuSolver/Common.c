@@ -267,7 +267,6 @@ void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
             if (val == 0.0) {
                 currentLineLength++; 
             }
-            //printf("%0.f ", val);
         }
         
         if (currentLineLength >= cutThreshold) {
@@ -284,44 +283,45 @@ void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
             }
             i+=3; //to avoid one-pixel black lines
         }
-
     }
-        
-        //printf("\n");
-    
 }
 void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]) {
-//    IplImage *img_bw = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
-//    cvCvtColor(source, img_bw, CV_RGB2GRAY);
 
-//    cvThreshold(img_bw, img_bw, 125, 0, CV_THRESH_TOZERO);
-
-    int cutThreshold = source->width * 0.7;
-    int prevLineY = 0;
-    int currentLineLength;
     int countOfSquares = 0;
     
-    for (int i = 0 ; i < source->height; i++) {
-        currentLineLength = 0;
-        for (int j = 0 ; j < source->width; j++) {
-            double val = cvGet2D(source, i, j).val[0];
-            if (val == 0.0) {
-                currentLineLength++;
-            }
-            //printf("%0.f ", val);
-        }
-        if (currentLineLength >= cutThreshold) {
+    int start = 0;
+    int stop = 0;
+    
+    int i = 0;
+    do {
+        double val = cvGet2D(source, i, source->width/2).val[0];
+        if (val == 0.0)
+            start = i;
+        i++;
+    } while (!start);
+    
+    i = source->height-1;
+    do {
+        double val = cvGet2D(source, i, source->width/2).val[0];
+        if (val == 0.0)
+            stop = i;
+        i--;
+    } while (!stop);
+
+    int prevLineY = start;
+
+    for (int i = start ; i < stop; i++) {
+        if (/*currentLineLength >= cutThreshold ||*/ i - prevLineY > (stop-start)/ 9) {
             CvRect rect = cvRect(0, prevLineY, source->width, i - prevLineY);
             prevLineY = i;
             IplImage *resultImage = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
             GetSubImage(source, resultImage, rect);
             array[countOfSquares++] = resultImage;
-            if (countOfSquares >= 8) {
-                return;
-            }
-            i+=5; //to avoid one-pixel black lines
+            i+=3; //to avoid one-pixel black lines
         }
-
-        //printf("\n");
+        CvRect rect = cvRect(0, prevLineY, source->width, stop - prevLineY);
+        IplImage *resultImage = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
+        GetSubImage(source, resultImage, rect);
+        array[countOfSquares] = resultImage;
     }
 }

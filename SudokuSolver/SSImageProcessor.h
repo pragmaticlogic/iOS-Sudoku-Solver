@@ -11,8 +11,8 @@
 -(id)initWithImage:(UIImage *)image;
 - (UIImage *)binarizeImage:(UIImage *)source;
 - (UIImage *)detectBoundingRectangle:(UIImage *)source;
-- (UIImage *)closeImage:(UIImage *)source;
 - (UIImage *)rotateImage:(UIImage *)source;
 - (UIImage *)detectLines:(UIImage *)source;
 
+@property (nonatomic, readonly) NSArray *splitImages;
 @end

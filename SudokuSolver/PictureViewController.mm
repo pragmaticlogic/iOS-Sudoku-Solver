@@ -7,6 +7,7 @@
 //
 
 #import "PictureViewController.h"
+#import "SplitSudokuViewController.h"
 #import "SSImageProcessor.h"
 #import "UIImage+Additions.h"
 
@@ -46,7 +47,9 @@ int testSudoku[9][9] = {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.imageView.image = [[UIImage imageNamed:@"test1.JPG"] scaleAndRotateImage];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(onAddPhotoTap:)];
+    self.navigationItem.rightBarButtonItem = item;
+    self.imageView.image = [[UIImage imageNamed:@"1.jpg"] scaleAndRotateImage];
 }
 
 - (void)viewDidUnload {
@@ -64,7 +67,7 @@ int testSudoku[9][9] = {
 
 - (IBAction)onAddPhotoTap:(id)sender {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Take Photo" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"From Camera", @"From Library", nil];
-    [actionSheet showFromToolbar:self.toolBar];
+    [actionSheet showInView:self.view];
 }
 
 - (IBAction)onRotateButtonTap:(id)sender {
@@ -73,8 +76,9 @@ int testSudoku[9][9] = {
 
 - (IBAction)onDetectRectangleButtonTap:(id)sender {
     self.imageView.image = [self.imageProcessor detectLines:self.imageView.image];
-    //self.imageView.image = [self.imageProcessor detectBoundingRectangle:self.imageView.image];
-    //self.imageView.image = [self.imageProcessor closeImage:self.imageView.image];
+    SplitSudokuViewController *splitVC = [[SplitSudokuViewController alloc] init];
+    splitVC.itemsToDisplay = [self.imageProcessor splitImages];
+    [self.navigationController pushViewController:splitVC animated:YES];
 }
 
 #pragma mark - UIActionSheetDelegate

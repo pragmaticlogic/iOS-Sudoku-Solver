@@ -19,11 +19,14 @@ extern "C" {
 
 @interface SSImageProcessor () {
     CvPoint sudokuFrame[2];
+    IplImage *squares[9][9];
 }
 
 @property (nonatomic, retain) UIImage *image;
 
 @property (nonatomic, retain) UIImage *binarizedImage;
+
+- (IplImage *)closeImage:(IplImage *)source;
 
 @end
 
@@ -66,45 +69,44 @@ extern "C" {
 }
 
 
-- (UIImage *)closeImage:(UIImage *)source {
-    IplImage *img_rgb = [source IplImage];
-    IplImage *img_gray = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
-    cvCvtColor(img_rgb, img_gray, CV_RGB2GRAY);
+- (IplImage *)closeImage:(IplImage *)source {
+    //IplImage *img_gray = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
+    //cvCvtColor(source, img_gray, CV_RGB2GRAY);
     
     int radius = 3;
     IplConvKernel* Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_RECT, NULL);
-    cvErode(img_gray, img_gray, Kern, 1);
-    cvDilate(img_gray, img_gray, Kern, 1);
+    cvErode(source, source, Kern, 1);
+    cvDilate(source, source, Kern, 1);
     
 
     
     cvReleaseStructuringElement(&Kern);
     
-    CvScalar pixel;
     
-    IplImage* color_dst = cvCreateImage( cvGetSize(img_gray), IPL_DEPTH_8U, 3);
-    cvCvtColor(img_gray, color_dst, CV_GRAY2RGB);
+    //IplImage* color_dst = cvCreateImage( cvGetSize(source), IPL_DEPTH_8U, 3);
+    //cvCvtColor(source, color_dst, CV_GRAY2RGB);
 
-    return [UIImage imageFromIplImage:color_dst];
+    return source;
 
-    for (int i = 1; i < img_rgb->height - 1; i++) {
-        for (int j = 1; j < img_rgb->width - 1; j++) {
-            pixel = cvGet2D(img_gray, i, j);
-            
-            if (pixel.val[0] == 0.0) {
-                if (cvGet2D(img_gray, i - 1, j).val[0] == 0.0 && 
-                    cvGet2D(img_gray, i + 1, j).val[0] == 0.0 && 
-                    cvGet2D(img_gray, i, j - 1).val[0] == 0.0 &&
-                    cvGet2D(img_gray, i, j + 1).val[0] == 0.0) {
-                    cvCircle(color_dst, cvPoint(j, i), 2, CV_RGB(255,255,0), 1, CV_AA, 0);
-                }
-            }
-        }
-    }
+//    CvScalar pixel;
+//    for (int i = 1; i < img_rgb->height - 1; i++) {
+//        for (int j = 1; j < img_rgb->width - 1; j++) {
+//            pixel = cvGet2D(img_gray, i, j);
+//            
+//            if (pixel.val[0] == 0.0) {
+//                if (cvGet2D(img_gray, i - 1, j).val[0] == 0.0 && 
+//                    cvGet2D(img_gray, i + 1, j).val[0] == 0.0 && 
+//                    cvGet2D(img_gray, i, j - 1).val[0] == 0.0 &&
+//                    cvGet2D(img_gray, i, j + 1).val[0] == 0.0) {
+//                    cvCircle(color_dst, cvPoint(j, i), 2, CV_RGB(255,255,0), 1, CV_AA, 0);
+//                }
+//            }
+//        }
+//    }
+//
+//    UIImage *result = [UIImage imageFromIplImage:color_dst];
 
-    UIImage *result = [UIImage imageFromIplImage:color_dst];
-
-    return result;
+//    return result;
 }
 
 - (double)imageRotationAngle:(UIImage *)source {
@@ -138,7 +140,20 @@ extern "C" {
     double rotationAngle = [self imageRotationAngle:source];
     return [UIImage imageFromIplImage:rotateImage([source IplImage], rotationAngle)];
 }
-            
+
+- (NSArray *)splitImages {
+    NSMutableArray *result = [NSMutableArray array];
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {            
+            IplImage *square_rgb = cvCreateImage(cvGetSize(squares[j][i]), IPL_DEPTH_8U, 3);
+            cvCvtColor(squares[j][i], square_rgb, CV_GRAY2RGB);
+            UIImage *image = [UIImage imageFromIplImage:square_rgb];
+            [result addObject:image];
+        }
+    }
+    return result;
+}
+
 - (UIImage *)detectLines:(UIImage *)source {
     IplImage *img_rgb = [source IplImage];
     IplImage *img_bw = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
@@ -182,15 +197,14 @@ extern "C" {
     
     IplImage *stripes[9];
     splitSudokuIntoVerticalStripes(onlySudokuBoxImage, stripes);
-
-    IplImage *squares[9][9];
-
+    
     for (int i = 0; i < 9; i++) {
-            splitVerticalLineIntoDigits(stripes[0], squares[i]);
+        //IplImage *ipl = [self closeImage:stripes[i]];
+        splitVerticalLineIntoDigits(stripes[i], squares[i]);
     }
     
-    IplImage *square_rgb = cvCreateImage(cvGetSize(squares[0][3]), IPL_DEPTH_8U, 3);
-    cvCvtColor(squares[0][3], square_rgb, CV_GRAY2RGB);
+    IplImage *square_rgb = cvCreateImage(cvGetSize(squares[8][8]), IPL_DEPTH_8U, 3);
+    cvCvtColor(squares[8][8], square_rgb, CV_GRAY2RGB);
     
     //return [self closeImage:[UIImage imageFromIplImage:square_rgb]];
     return [UIImage imageFromIplImage:square_rgb];
