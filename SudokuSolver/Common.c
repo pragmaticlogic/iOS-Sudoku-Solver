@@ -256,11 +256,23 @@ void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
 
     int cutThreshold = source->height * 0.3;
     int averageRowWidth = source->width / 9 * 0.7;
-    int prevLineX = 0;
     int currentLineLength;
     int countOfStripes = 0;
+    int start = 0;
+    
+    for (int i = 0; i < source->width; i++) {
+        double val = cvGet2D(img_bw, 5, i).val[0];
+        if (val == 0.0) {
+            start = i; break;
+        }
+    }
 
-    for (int i = 0 ; i < source->width; i++) {
+    if (start > source->width / 9) {
+        start = 0;
+    }
+    int prevLineX = start;
+
+    for (int i = start ; i < source->width; i++) {
         currentLineLength = 0;
         for (int j = 0 ; j < source->height; j++) {
             double val = cvGet2D(img_bw, j, i).val[0];

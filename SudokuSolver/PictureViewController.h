@@ -16,6 +16,7 @@
 - (IBAction)onAddPhotoTap:(id)sender;
 - (IBAction)onRotateButtonTap:(id)sender;
 - (IBAction)onDetectRectangleButtonTap:(id)sender;
+- (IBAction)onSplitButtonTap:(id)sender;
 
 
 

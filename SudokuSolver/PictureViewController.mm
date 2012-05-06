@@ -49,7 +49,7 @@ int testSudoku[9][9] = {
     [super viewDidLoad];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:@selector(onAddPhotoTap:)];
     self.navigationItem.rightBarButtonItem = item;
-    self.imageView.image = [[UIImage imageNamed:@"1.jpg"] scaleAndRotateImage];
+    self.imageView.image = [[UIImage imageNamed:@"4.jpg"] scaleAndRotateImage];
 }
 
 - (void)viewDidUnload {
@@ -76,6 +76,9 @@ int testSudoku[9][9] = {
 
 - (IBAction)onDetectRectangleButtonTap:(id)sender {
     self.imageView.image = [self.imageProcessor detectLines:self.imageView.image];
+}
+
+- (IBAction)onSplitButtonTap:(id)sender {
     SplitSudokuViewController *splitVC = [[SplitSudokuViewController alloc] init];
     splitVC.itemsToDisplay = [self.imageProcessor splitImages];
     [self.navigationController pushViewController:splitVC animated:YES];

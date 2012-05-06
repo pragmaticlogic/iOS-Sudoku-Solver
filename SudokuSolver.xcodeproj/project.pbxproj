@@ -25,12 +25,12 @@
 		03D14097148E5E2800A78781 /* Common.c in Sources */ = {isa = PBXBuildFile; fileRef = 03D14096148E5E2800A78781 /* Common.c */; };
 		AF873AB9154F223C0044C84B /* SplitSudokuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF873AB7154F223C0044C84B /* SplitSudokuViewController.m */; };
 		AF873ABA154F223C0044C84B /* SplitSudokuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF873AB8154F223C0044C84B /* SplitSudokuViewController.xib */; };
-		AF9C2314152323DC00120079 /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AF9C2313152323DC00120079 /* 1.jpg */; };
-		AFA9CD93152864EF00FEAAD2 /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AFA9CD92152864EF00FEAAD2 /* 2.jpg */; };
+		AF9C2314152323DC00120079 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AF9C2313152323DC00120079 /* 3.jpg */; };
 		AFCDBF06152031190028373E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF05152031190028373E /* AVFoundation.framework */; };
 		AFCDBF08152031740028373E /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCDBF07152031740028373E /* CoreVideo.framework */; };
 		AFCDBF0C152033E70028373E /* SSSolver.c in Sources */ = {isa = PBXBuildFile; fileRef = AFCDBF0B152033E70028373E /* SSSolver.c */; };
 		AFCDBF2B15208AF20028373E /* SSImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = AFCDBF2A15208AF20028373E /* SSImageProcessor.m */; };
+		AFD892C21556820000EBDF60 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AFD892C11556820000EBDF60 /* 4.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,14 +60,14 @@
 		AF873AB6154F223C0044C84B /* SplitSudokuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitSudokuViewController.h; sourceTree = "<group>"; };
 		AF873AB7154F223C0044C84B /* SplitSudokuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplitSudokuViewController.m; sourceTree = "<group>"; };
 		AF873AB8154F223C0044C84B /* SplitSudokuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SplitSudokuViewController.xib; sourceTree = "<group>"; };
-		AF9C2313152323DC00120079 /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
-		AFA9CD92152864EF00FEAAD2 /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
+		AF9C2313152323DC00120079 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
 		AFCDBF05152031190028373E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AFCDBF07152031740028373E /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		AFCDBF0A152033D90028373E /* SSSolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSSolver.h; sourceTree = "<group>"; };
 		AFCDBF0B152033E70028373E /* SSSolver.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SSSolver.c; sourceTree = "<group>"; };
 		AFCDBF2915208AF20028373E /* SSImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSImageProcessor.h; sourceTree = "<group>"; };
 		AFCDBF2A15208AF20028373E /* SSImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSImageProcessor.m; sourceTree = "<group>"; };
+		AFD892C11556820000EBDF60 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,8 +153,8 @@
 		03D14074148E0B6B00A78781 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				AF9C2313152323DC00120079 /* 1.jpg */,
-				AFA9CD92152864EF00FEAAD2 /* 2.jpg */,
+				AFD892C11556820000EBDF60 /* 4.jpg */,
+				AF9C2313152323DC00120079 /* 3.jpg */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -248,9 +248,9 @@
 			files = (
 				03D1405C148DFFFC00A78781 /* InfoPlist.strings in Resources */,
 				03D14073148E013A00A78781 /* PictureViewController.xib in Resources */,
-				AF9C2314152323DC00120079 /* 1.jpg in Resources */,
-				AFA9CD93152864EF00FEAAD2 /* 2.jpg in Resources */,
+				AF9C2314152323DC00120079 /* 3.jpg in Resources */,
 				AF873ABA154F223C0044C84B /* SplitSudokuViewController.xib in Resources */,
+				AFD892C21556820000EBDF60 /* 4.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

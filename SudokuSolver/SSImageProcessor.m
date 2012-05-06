@@ -20,6 +20,7 @@ extern "C" {
 @interface SSImageProcessor () {
     CvPoint sudokuFrame[2];
     IplImage *squares[9][9];
+    IplImage *sudokuImage;
 }
 
 @property (nonatomic, retain) UIImage *image;
@@ -142,12 +143,30 @@ extern "C" {
 }
 
 - (NSArray *)splitImages {
+    
+    IplImage *stripes[9];
+    splitSudokuIntoVerticalStripes(sudokuImage, stripes);
+    
+    for (int i = 0; i < 9; i++) {
+        splitVerticalLineIntoDigits(stripes[i], squares[i]);
+    }
+        
+    
     NSMutableArray *result = [NSMutableArray array];
     for (int i = 0; i < 9; i++) {
         for (int j = 0; j < 9; j++) {            
             IplImage *square_rgb = cvCreateImage(cvGetSize(squares[j][i]), IPL_DEPTH_8U, 3);
             cvCvtColor(squares[j][i], square_rgb, CV_GRAY2RGB);
-            UIImage *image = [UIImage imageFromIplImage:square_rgb];
+            CvRect rect = cvRect(0.2 * square_rgb->width/2, 0.2 * square_rgb->height/2, square_rgb->width *0.8, square_rgb->height * 0.8);
+            IplImage *dest = cvCreateImage(cvSize(rect.width, rect.height), IPL_DEPTH_8U, 3);
+            GetSubImage(square_rgb, dest, rect);
+            
+            
+            
+            
+            
+            
+            UIImage *image = [UIImage imageFromIplImage:dest];
             [result addObject:image];
         }
     }
@@ -193,20 +212,7 @@ extern "C" {
     IplImage *onlySudokuBoxImage = cvCreateImage(cvSize(boxWidth, boxHeight),IPL_DEPTH_8U,3);
     GetSubImage(img_rgb, onlySudokuBoxImage, cvRect(sudokuFrame[0].x, sudokuFrame[0].y, boxWidth, boxHeight));
 
-    //return [UIImage imageFromIplImage:onlySudokuBoxImage];
-    
-    IplImage *stripes[9];
-    splitSudokuIntoVerticalStripes(onlySudokuBoxImage, stripes);
-    
-    for (int i = 0; i < 9; i++) {
-        //IplImage *ipl = [self closeImage:stripes[i]];
-        splitVerticalLineIntoDigits(stripes[i], squares[i]);
-    }
-    
-    IplImage *square_rgb = cvCreateImage(cvGetSize(squares[8][8]), IPL_DEPTH_8U, 3);
-    cvCvtColor(squares[8][8], square_rgb, CV_GRAY2RGB);
-    
-    //return [self closeImage:[UIImage imageFromIplImage:square_rgb]];
-    return [UIImage imageFromIplImage:square_rgb];
+    sudokuImage = onlySudokuBoxImage;
+    return [UIImage imageFromIplImage:onlySudokuBoxImage];    
 }
 @end
