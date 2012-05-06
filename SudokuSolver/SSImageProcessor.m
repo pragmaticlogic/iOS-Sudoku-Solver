@@ -70,44 +70,15 @@ extern "C" {
 }
 
 
-- (IplImage *)closeImage:(IplImage *)source {
-    //IplImage *img_gray = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
-    //cvCvtColor(source, img_gray, CV_RGB2GRAY);
-    
-    int radius = 3;
-    IplConvKernel* Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_RECT, NULL);
+- (IplImage *)closeImage:(IplImage *)source {    
+    int radius = 1;
+    IplConvKernel* Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_ELLIPSE, NULL);
     cvErode(source, source, Kern, 1);
     cvDilate(source, source, Kern, 1);
     
-
-    
     cvReleaseStructuringElement(&Kern);
-    
-    
-    //IplImage* color_dst = cvCreateImage( cvGetSize(source), IPL_DEPTH_8U, 3);
-    //cvCvtColor(source, color_dst, CV_GRAY2RGB);
 
     return source;
-
-//    CvScalar pixel;
-//    for (int i = 1; i < img_rgb->height - 1; i++) {
-//        for (int j = 1; j < img_rgb->width - 1; j++) {
-//            pixel = cvGet2D(img_gray, i, j);
-//            
-//            if (pixel.val[0] == 0.0) {
-//                if (cvGet2D(img_gray, i - 1, j).val[0] == 0.0 && 
-//                    cvGet2D(img_gray, i + 1, j).val[0] == 0.0 && 
-//                    cvGet2D(img_gray, i, j - 1).val[0] == 0.0 &&
-//                    cvGet2D(img_gray, i, j + 1).val[0] == 0.0) {
-//                    cvCircle(color_dst, cvPoint(j, i), 2, CV_RGB(255,255,0), 1, CV_AA, 0);
-//                }
-//            }
-//        }
-//    }
-//
-//    UIImage *result = [UIImage imageFromIplImage:color_dst];
-
-//    return result;
 }
 
 - (double)imageRotationAngle:(UIImage *)source {
@@ -160,11 +131,15 @@ extern "C" {
             CvRect rect = cvRect(0.2 * square_rgb->width/2, 0.2 * square_rgb->height/2, square_rgb->width *0.8, square_rgb->height * 0.8);
             IplImage *dest = cvCreateImage(cvSize(rect.width, rect.height), IPL_DEPTH_8U, 3);
             GetSubImage(square_rgb, dest, rect);
-            
-            
-            
-            
-            
+                        
+//            IplImage *img_bw_src= cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,1);
+//            IplImage *img_bw_dest= cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,1);
+//            IplImage *color_dst = cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,3);
+//
+//            cvCvtColor(dest, img_bw_src, CV_RGB2GRAY);
+//            img_bw_dest = [self closeImage:img_bw_src];
+//            
+//            cvCvtColor(img_bw_dest, color_dst, CV_GRAY2RGB);
             
             UIImage *image = [UIImage imageFromIplImage:dest];
             [result addObject:image];
@@ -214,5 +189,40 @@ extern "C" {
 
     sudokuImage = onlySudokuBoxImage;
     return [UIImage imageFromIplImage:onlySudokuBoxImage];    
+}
+
+- (int)recognizeDigit:(UIImage *)source {
+    IplImage *img = [source IplImage];
+    IplImage *img_bw = cvCreateImage(cvGetSize(img),IPL_DEPTH_8U,1);
+    cvCvtColor(img, img_bw, CV_RGB2GRAY);
+
+    int horizCount = 0;
+    int vertCount = 0;
+    
+    int frameSize = 6;
+    
+    int startX = img_bw -> width / 2 - frameSize/2;
+    
+    for (int i = startX; i < startX + frameSize; i++) {
+        double val = cvGet2D(img_bw, img_bw->height /2, i).val[0];
+        if (val == 0.0) {
+            horizCount++;
+        }
+    }
+    
+    int startY = img_bw -> height / 2 - frameSize/2;
+
+    for (int j = startX; j < startY + frameSize; j++) {
+        double val = cvGet2D(img_bw, j, img_bw->width /2).val[0];
+        if (val == 0.0) {
+            vertCount++;
+        }
+    }
+
+    if (horizCount == 0 && vertCount == 0) {
+        return 0;
+    }
+
+    return 1;
 }
 @end

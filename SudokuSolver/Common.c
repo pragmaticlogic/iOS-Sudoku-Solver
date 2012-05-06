@@ -54,12 +54,6 @@ void AdaptiveThreshold(IplImage *source, IplImage *result, int size) {
     
     IplImage *img_gray = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
     cvCvtColor(source, img_gray, CV_RGB2GRAY);
-
-    //IplImage *img_hsv = cvCreateImage(cvSize(source->width, source->height), source->depth, 3);
-    //cvCvtColor( source,img_hsv,CV_RGB2HSV);
-
-    //CvMat *integralSum = cvCreateMat(img_gray->width, img_gray->height, 10);
-    //DlIntegral(img_gray, integralSum);
     
     for (int i = 0; i < img_gray->height; i++) {
         for (int j = 0; j < img_gray->width; j++) {

@@ -8,7 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class SSImageProcessor;
+
 @interface SplitSudokuViewController : UIViewController
 
 @property (nonatomic, retain) NSArray *itemsToDisplay;
+@property (nonatomic, retain) SSImageProcessor *imgProcessor;
+
+- (IBAction)onPrepareImagesTap:(id)sender;
+- (IBAction)onRecognizeTap:(id)sender;
+
 @end

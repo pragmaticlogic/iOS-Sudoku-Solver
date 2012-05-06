@@ -7,14 +7,20 @@
 //
 
 #import "SplitSudokuViewController.h"
+#import "SSImageProcessor.h"
+#import "ResultViewController.h"
 
 @interface SplitSudokuViewController ()
+
+@property (nonatomic, retain) NSMutableArray *sudokuDigits;
 
 @end
 
 @implementation SplitSudokuViewController
 
 @synthesize itemsToDisplay;
+@synthesize imgProcessor;
+@synthesize sudokuDigits;
 
 - (void)viewDidLoad
 {
@@ -27,20 +33,30 @@
         xOffset = 8;
         for (int j = 0; j < 9; j++) {
             UIImageView *imgView = [[UIImageView alloc] initWithFrame:CGRectMake(xOffset, yOffset, size, size)];
-            imgView.tag = i * 9 + j;
+            imgView.tag = i * 9 + j + 100;
             [self.view addSubview:imgView];
             xOffset += (offset + size);
         }
         yOffset += (offset + size);
     }
     for (int i = 0; i < [self.itemsToDisplay count]; i++) {
-        UIImageView *imgView = (UIImageView *)[self.view viewWithTag:i];
+        UIImageView *imgView = (UIImageView *)[self.view viewWithTag:i + 100];
         [imgView setImage:[self.itemsToDisplay objectAtIndex:i]];
     }
-    // Do any additional setup after loading the view from its nib.
 }
 
-- (void)viewDidUnload {
-    [super viewDidUnload];
+- (IBAction)onPrepareImagesTap:(id)sender {
+    
+}
+
+- (IBAction)onRecognizeTap:(id)sender {
+    self.sudokuDigits = [NSMutableArray array];
+    for (UIImage *img in itemsToDisplay) {
+        int value = [self.imgProcessor recognizeDigit:img];
+        [self.sudokuDigits addObject:[NSNumber numberWithInt:value]];
+    }
+    ResultViewController *rVC = [[ResultViewController alloc] init];
+    rVC.solvedSudoku = self.sudokuDigits;
+    [self.navigationController pushViewController:rVC animated:YES];
 }
 @end

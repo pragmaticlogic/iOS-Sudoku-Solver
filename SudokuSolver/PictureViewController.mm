@@ -81,6 +81,7 @@ int testSudoku[9][9] = {
 - (IBAction)onSplitButtonTap:(id)sender {
     SplitSudokuViewController *splitVC = [[SplitSudokuViewController alloc] init];
     splitVC.itemsToDisplay = [self.imageProcessor splitImages];
+    splitVC.imgProcessor = self.imageProcessor;
     [self.navigationController pushViewController:splitVC animated:YES];
 }
 

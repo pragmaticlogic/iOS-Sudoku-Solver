@@ -31,6 +31,8 @@
 		AFCDBF0C152033E70028373E /* SSSolver.c in Sources */ = {isa = PBXBuildFile; fileRef = AFCDBF0B152033E70028373E /* SSSolver.c */; };
 		AFCDBF2B15208AF20028373E /* SSImageProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = AFCDBF2A15208AF20028373E /* SSImageProcessor.m */; };
 		AFD892C21556820000EBDF60 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AFD892C11556820000EBDF60 /* 4.jpg */; };
+		AFD892C71556958500EBDF60 /* ResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AFD892C51556958500EBDF60 /* ResultViewController.m */; };
+		AFD892C81556958500EBDF60 /* ResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AFD892C61556958500EBDF60 /* ResultViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +70,9 @@
 		AFCDBF2915208AF20028373E /* SSImageProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSImageProcessor.h; sourceTree = "<group>"; };
 		AFCDBF2A15208AF20028373E /* SSImageProcessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSImageProcessor.m; sourceTree = "<group>"; };
 		AFD892C11556820000EBDF60 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
+		AFD892C41556958500EBDF60 /* ResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResultViewController.h; sourceTree = "<group>"; };
+		AFD892C51556958500EBDF60 /* ResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResultViewController.m; sourceTree = "<group>"; };
+		AFD892C61556958500EBDF60 /* ResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResultViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -192,6 +197,9 @@
 				AF873AB6154F223C0044C84B /* SplitSudokuViewController.h */,
 				AF873AB7154F223C0044C84B /* SplitSudokuViewController.m */,
 				AF873AB8154F223C0044C84B /* SplitSudokuViewController.xib */,
+				AFD892C41556958500EBDF60 /* ResultViewController.h */,
+				AFD892C51556958500EBDF60 /* ResultViewController.m */,
+				AFD892C61556958500EBDF60 /* ResultViewController.xib */,
 			);
 			name = ViewConrtollers;
 			sourceTree = "<group>";
@@ -251,6 +259,7 @@
 				AF9C2314152323DC00120079 /* 3.jpg in Resources */,
 				AF873ABA154F223C0044C84B /* SplitSudokuViewController.xib in Resources */,
 				AFD892C21556820000EBDF60 /* 4.jpg in Resources */,
+				AFD892C81556958500EBDF60 /* ResultViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +278,7 @@
 				AFCDBF0C152033E70028373E /* SSSolver.c in Sources */,
 				AFCDBF2B15208AF20028373E /* SSImageProcessor.m in Sources */,
 				AF873AB9154F223C0044C84B /* SplitSudokuViewController.m in Sources */,
+				AFD892C71556958500EBDF60 /* ResultViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
