@@ -132,11 +132,24 @@ extern "C" {
             IplImage *dest = cvCreateImage(cvSize(rect.width, rect.height), IPL_DEPTH_8U, 3);
             GetSubImage(square_rgb, dest, rect);
                         
-//            IplImage *img_bw_src= cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,1);
+            
+            IplImage *img_bw_src= cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,1);
 //            IplImage *img_bw_dest= cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,1);
 //            IplImage *color_dst = cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,3);
 //
-//            cvCvtColor(dest, img_bw_src, CV_RGB2GRAY);
+            cvCvtColor(dest, img_bw_src, CV_RGB2GRAY);
+            
+            for (int i = 0; i < img_bw_src->height; i++) {
+                int value = 0;
+                for (int j = 0; j < img_bw_src->width; j++) {
+                    CvScalar pixel = cvGet2D(img_bw_src, i, j);
+                    if (pixel.val[0] == 0.0) {
+                        value++;
+                    }
+                }
+                printf("%d\n", value);
+            }
+
 //            img_bw_dest = [self closeImage:img_bw_src];
 //            
 //            cvCvtColor(img_bw_dest, color_dst, CV_GRAY2RGB);

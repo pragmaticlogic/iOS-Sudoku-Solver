@@ -275,11 +275,12 @@ void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
             }
         }
         
+        int magicCropGap = 5;
         if (currentLineLength >= cutThreshold) {
             if (i - prevLineX < averageRowWidth) {
                 continue;
             }
-            CvRect rect = cvRect(prevLineX, 0, i - prevLineX, source->height);
+            CvRect rect = cvRect(prevLineX + magicCropGap, 0, i - prevLineX - magicCropGap, source->height);
             prevLineX = i;
             IplImage *resultImage = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
             GetSubImage(img_bw, resultImage, rect);
@@ -287,7 +288,7 @@ void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
             if (countOfStripes >= 9) {
                 return;
             }
-            i+=3; //to avoid one-pixel black lines
+            i+=2; //to avoid one-pixel black lines
         }
     }
 }
@@ -316,14 +317,15 @@ void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]) {
 
     int prevLineY = start;
 
+    int magicCropGap = 5;
     for (int i = start ; i < stop; i++) {
-        if (/*currentLineLength >= cutThreshold ||*/ i - prevLineY > (stop-start)/ 9) {
-            CvRect rect = cvRect(0, prevLineY, source->width, i - prevLineY);
+        if (i - prevLineY > (stop-start)/ 9) {
+            CvRect rect = cvRect(0, prevLineY, source->width, i - prevLineY - magicCropGap);
             prevLineY = i;
             IplImage *resultImage = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
             GetSubImage(source, resultImage, rect);
             array[countOfSquares++] = resultImage;
-            i+=3; //to avoid one-pixel black lines
+            i+=2; //to avoid one-pixel black lines
         }
         CvRect rect = cvRect(0, prevLineY, source->width, stop - prevLineY);
         IplImage *resultImage = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
