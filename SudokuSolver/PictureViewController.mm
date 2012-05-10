@@ -85,6 +85,10 @@ int testSudoku[9][9] = {
     [self.navigationController pushViewController:splitVC animated:YES];
 }
 
+- (IBAction)onThinTap:(id)sender {
+    self.imageView.image = [self.imageProcessor thinImage:self.imageView.image];
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {

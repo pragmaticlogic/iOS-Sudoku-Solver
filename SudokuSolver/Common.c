@@ -9,46 +9,65 @@
 #include <stdio.h>
 #include "Common.h"
 
+#define BLACK_PIXEL 0
+#define WHITE_PIXEL 255
+#define DELETED_PIXEL 99
+#define YES 1
+#define NO 0
+
+unsigned char firstCondition(IplImage *source, int i, int j);
+unsigned char secondCondition(IplImage *source, int i, int j);
+unsigned char thirdCondition(IplImage *source, int i, int j);
+unsigned char fourthCondition(IplImage *source, int i, int j);
+unsigned char fifthCondition(IplImage *source, int i, int j);
+unsigned char sixthCondition(IplImage *source, int i, int j);
+
+
+int countOfPairs(IplImage *source, int i, int j);
+int countOfNeighbourPixels(int searchValue, IplImage * source, int i, int j);
+
+unsigned char p2p4Check(IplImage *source, int i, int j, int k, int l);
+
 const int boundingBoxTreshhold = 2; //if count of black pixels in line is less than this value, the line is marked as the border
 
 
-void DlIntegral(IplImage *source, CvMat *result) {
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            printf("%.0f ",cvGet2D(source, i, j).val[0]);
-        }
-        printf("\n");
-    }
-    printf("///////////\n"); 
-    
-    cvSet2D(result, 0, 0, cvScalarAll(cvGet2D(source, 0, 0).val[0]));
-    
-    for (int x = 1; x < source->width; x++) {
-        double sum = cvGet2D(source, x, 0).val[0] + cvGet2D(result, x-1, 0).val[0];
-        cvSet2D(result, x, 0, cvScalarAll(sum));
-    }
-        
-        for (int y = 1; y < 360/*img_hsv->height*/; y++) {
-            double sum = cvGet2D(source, 0, y).val[0] + cvGet2D(result, 0, y-1).val[0];
-            cvSet2D(result, 0, y, cvScalarAll(sum));
-        }
-       
-       for (int y = 1; y <360/*img_hsv->height*/; y++) {
-            for (int x = 1; x<source->width; x++) {
-                double sum = cvGet2D(source, x, y).val[0] + cvGet2D(result, x-1, y).val[0] +
-                cvGet2D(source, x, y-1).val[0] - cvGet2D(result, x-1, y-1).val[0];
-                cvSet2D(result, x, y, cvScalarAll(sum));
-            }
-        }
-        
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                printf("%.0f ",cvGet2D(result, i, j).val[0]);
-            }
-            printf("\n");
-        }
-
-}
+//void DlIntegral(IplImage *source, CvMat *result) {
+//    for (int i = 0; i < 10; i++) {
+//        for (int j = 0; j < 10; j++) {
+//            printf("%.0f ",cvGet2D(source, i, j).val[0]);
+//        }
+//        printf("\n");
+//    }
+//    printf("///////////\n"); 
+//    
+//    cvSet2D(result, 0, 0, cvScalarAll(cvGet2D(source, 0, 0).val[0]));
+//    
+//    for (int x = 1; x < source->width; x++) {
+//        double sum = cvGet2D(source, x, 0).val[0] + cvGet2D(result, x-1, 0).val[0];
+//        cvSet2D(result, x, 0, cvScalarAll(sum));
+//    }
+//        
+//        for (int y = 1; y < 360/*img_hsv->height*/; y++) {
+//            double sum = cvGet2D(source, 0, y).val[0] + cvGet2D(result, 0, y-1).val[0];
+//            cvSet2D(result, 0, y, cvScalarAll(sum));
+//        }
+//       
+//       for (int y = 1; y <360/*img_hsv->height*/; y++) {
+//            for (int x = 1; x<source->width; x++) {
+//                double sum = cvGet2D(source, x, y).val[0] + cvGet2D(result, x-1, y).val[0] +
+//                cvGet2D(source, x, y-1).val[0] - cvGet2D(result, x-1, y-1).val[0];
+//                cvSet2D(result, x, y, cvScalarAll(sum));
+//            }
+//        }
+//        
+//        for (int i = 0; i < 10; i++) {
+//            for (int j = 0; j < 10; j++) {
+//                printf("%.0f ",cvGet2D(result, i, j).val[0]);
+//            }
+//            printf("\n");
+//        }
+//
+//}
 void AdaptiveThreshold(IplImage *source, IplImage *result, int size) {
     CvScalar pixel;
     
@@ -332,4 +351,124 @@ void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]) {
         GetSubImage(source, resultImage, rect);
         array[countOfSquares] = resultImage;
     }
+}
+
+void thinImage(IplImage *source, IplImage *destination) {
+    for (int i = 0; i < 6; i++) {
+        //cleanup
+        
+        for (int i = 5; i < source->height - 5; i++) {
+            for (int j = 5; j < source->width - 5; j++) {
+                if (cvGet2D(destination, i, j).val[0] == BLACK_PIXEL) {
+                    if (firstCondition(destination, i, j) &&
+                        secondCondition(destination, i, j) &&
+                        thirdCondition(destination, i, j) &&
+                        fourthCondition(destination, i, j) &&
+                        fifthCondition(destination, i, j) &&
+                        sixthCondition(destination, i, j)
+                        ) 
+                    {
+                        cvSet2D(destination, i, j, cvScalarAll(DELETED_PIXEL));
+                    }
+                }
+            }
+        }
+        
+        for (int i = 0; i < source->height - 5; i++) {
+            for (int j = 0; j < source->width - 5; j++) {
+                if (cvGet2D(destination, i, j).val[0] == DELETED_PIXEL) {
+                    cvSet2D(destination, i, j, cvScalarAll(WHITE_PIXEL));
+                }
+            }
+        }
+
+    }
+}
+
+int countOfNeighbourPixels(int searchValue, IplImage * source, int i, int j) {
+    int countOfEightLinkedNeighbours = 0;
+    for (int k = -1; k < 2; k++) {
+        for (int l = -1; l < 2; l++) { {
+                if (k == 0 && l == 0) { continue; }
+                if (cvGet2D(source, i + k, j + l).val[0] == searchValue) {
+                    countOfEightLinkedNeighbours++;
+                }
+            }
+        }
+    }
+    return countOfEightLinkedNeighbours;
+}
+
+int countOfPairs(IplImage *source, int i, int j) {
+    int countOfLinkedPairs = 0;
+    int p[9];
+    
+    p[0] = cvGet2D(source, i, j +1).val[0] > 0 ? 1 : 0;//matrix[i, j + 1];
+    p[1] = cvGet2D(source, i - 1, j + 1).val[0] > 0 ? 1 : 0;//matrix[i - 1, j + 1];
+    p[2] = cvGet2D(source, i - 1, j).val[0] > 0 ? 1 : 0;//matrix[i - 1, j];
+    p[3] = cvGet2D(source, i - 1, j - 1).val[0] > 0 ? 1 : 0;//matrix[i - 1, j - 1];
+    p[4] = cvGet2D(source, i, j - 1).val[0] > 0 ? 1 : 0;//matrix[i, j - 1];
+    p[5] = cvGet2D(source, i + 1, j + 1).val[0] > 0 ? 1 : 0;//matrix[i + 1, j - 1];
+    p[6] = cvGet2D(source, i + 1, j).val[0] > 0 ? 1 : 0;// matrix[i + 1, j];
+    p[7] = cvGet2D(source, i + 1, j + 1).val[0] > 0 ? 1 : 0;//matrix[i + 1, j + 1];
+    p[8] = p[0] > 0 ? 1 : 0;
+    
+    for (int m = 0; m < 9 - 1; m++) {
+        countOfLinkedPairs += p[m] * p[m + 1];
+    }
+    
+    return countOfLinkedPairs;
+}
+
+unsigned char p2p4Check(IplImage *source, int i, int j, int k, int l) {
+    unsigned char pixelShouldBeDeleted = YES;
+    if (cvGet2D(source, i + k, j + l).val[0] == DELETED_PIXEL) {
+        pixelShouldBeDeleted = NO;
+        cvSet2D(source, i + k, j + l, cvScalarAll(WHITE_PIXEL));
+        if (fourthCondition(source, i, j) == YES)
+        {
+            pixelShouldBeDeleted = YES;
+        }
+        cvSet2D(source, i+k, j+l, cvScalarAll(DELETED_PIXEL));
+    }
+    return pixelShouldBeDeleted;
+}
+
+unsigned char firstCondition(IplImage *source, int i, int j) {
+    int countOfFourLinkedSibilings = 0;
+    if (cvGet2D(source, i, j + 1).val[0] == WHITE_PIXEL) {
+        countOfFourLinkedSibilings++;
+    }
+    if (cvGet2D(source, i - 1 , j).val[0] == WHITE_PIXEL) {
+        countOfFourLinkedSibilings++;
+    }
+    if (cvGet2D(source, i, j - 1).val[0] == WHITE_PIXEL) { 
+        countOfFourLinkedSibilings++;
+    }
+    if (cvGet2D(source, i + 1, j).val[0] == WHITE_PIXEL) { 
+        countOfFourLinkedSibilings++;
+    }
+    return countOfFourLinkedSibilings > 1 ? YES : NO;
+}
+
+unsigned char secondCondition(IplImage *source, int i, int j) {
+    return countOfNeighbourPixels(BLACK_PIXEL, source, i, j) >= 2 ? YES : NO;
+}
+
+unsigned char thirdCondition(IplImage *source, int i, int j) {
+    return countOfNeighbourPixels(BLACK_PIXEL, source, i, j) - 
+    countOfNeighbourPixels(DELETED_PIXEL, source, i, j) >= 1 ? YES : NO;
+}
+
+unsigned char fourthCondition(IplImage *source, int i, int j) {
+    int result = countOfNeighbourPixels(WHITE_PIXEL, source, i, j) - countOfPairs(source, i, j);
+    return result < 2 ? YES : NO;
+}
+
+unsigned char fifthCondition(IplImage *source, int i, int j) {
+    return p2p4Check(source, i, j, 0, -1);
+}
+
+unsigned char sixthCondition(IplImage *source, int i, int j) {
+    return p2p4Check(source, i, j, -1, 0);
 }

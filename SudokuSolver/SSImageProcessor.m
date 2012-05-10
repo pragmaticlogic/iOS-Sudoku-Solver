@@ -47,15 +47,31 @@ extern "C" {
 - (UIImage *)binarizeImage:(UIImage *)source {
     IplImage *img_rgb = [source IplImage];
     IplImage* im_bw = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
+
+
     AdaptiveThreshold(img_rgb, im_bw, 11);
-    
+        
     IplImage* color_dst = cvCreateImage( cvGetSize(im_bw), IPL_DEPTH_8U, 3);
     cvCvtColor(im_bw, color_dst, CV_GRAY2RGB);
     self.binarizedImage = [UIImage imageFromIplImage:color_dst];
 
     cvReleaseImage(&color_dst);
     cvReleaseImage(&im_bw);
+    
+    
     return self.binarizedImage;
+}
+
+- (UIImage *)thinImage:(UIImage *)source {
+    IplImage *img_rgb = [source IplImage];
+    IplImage* im_bw = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
+    IplImage* im_bw_thinned = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
+    cvCopy(im_bw, im_bw_thinned, NULL);
+    thinImage(im_bw, im_bw_thinned);
+    IplImage* color_dst = cvCreateImage( cvGetSize(im_bw), IPL_DEPTH_8U, 3);
+    cvCvtColor(im_bw_thinned, color_dst, CV_GRAY2RGB);
+    return [UIImage imageFromIplImage:color_dst];
+
 }
 
 - (UIImage *)detectBoundingRectangle:(UIImage *)source {

@@ -17,6 +17,7 @@
 - (IBAction)onRotateButtonTap:(id)sender;
 - (IBAction)onDetectRectangleButtonTap:(id)sender;
 - (IBAction)onSplitButtonTap:(id)sender;
+- (IBAction)onThinTap:(id)sender;
 
 
 

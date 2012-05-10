@@ -22,3 +22,4 @@ void detectSudokuBoundingBox(IplImage *image, CvPoint box[]);
 
 void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]);
 void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]);
+void thinImage(IplImage *source, IplImage *destination);
