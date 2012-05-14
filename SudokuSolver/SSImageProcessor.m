@@ -147,30 +147,13 @@ extern "C" {
             CvRect rect = cvRect(0.2 * square_rgb->width/2, 0.2 * square_rgb->height/2, square_rgb->width *0.8, square_rgb->height * 0.8);
             IplImage *dest = cvCreateImage(cvSize(rect.width, rect.height), IPL_DEPTH_8U, 3);
             GetSubImage(square_rgb, dest, rect);
-                        
             
-            IplImage *img_bw_src= cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,1);
-//            IplImage *img_bw_dest= cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,1);
-//            IplImage *color_dst = cvCreateImage(cvGetSize(dest),IPL_DEPTH_8U,3);
-//
-            cvCvtColor(dest, img_bw_src, CV_RGB2GRAY);
-            
-            for (int i = 0; i < img_bw_src->height; i++) {
-                int value = 0;
-                for (int j = 0; j < img_bw_src->width; j++) {
-                    CvScalar pixel = cvGet2D(img_bw_src, i, j);
-                    if (pixel.val[0] == 0.0) {
-                        value++;
-                    }
-                }
-                printf("%d\n", value);
-            }
-
-//            img_bw_dest = [self closeImage:img_bw_src];
-//            
-//            cvCvtColor(img_bw_dest, color_dst, CV_GRAY2RGB);
-            
-            UIImage *image = [UIImage imageFromIplImage:dest];
+            IplImage *img_bw_src = cropImage(dest);
+            IplImage *resultImage = cvCreateImage(cvGetSize(img_bw_src), IPL_DEPTH_8U, 3);
+        
+            cvCvtColor(img_bw_src, resultImage, CV_GRAY2RGB);
+                
+            UIImage *image = [UIImage imageFromIplImage:resultImage];
             [result addObject:image];
         }
     }

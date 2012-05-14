@@ -311,6 +311,46 @@ void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
         }
     }
 }
+
+
+IplImage* cropImage(IplImage *source) {
+    IplImage *img_bw = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
+    cvCvtColor(source, img_bw, CV_RGB2GRAY);
+
+    int startY = 0, stopY = source -> height;
+    
+    for (int i = 0 ; i < source->height / 2; i++) {
+        int lenghtsTop = 0;
+        for (int j = 0 ; j < source->width; j++) {
+            double val = cvGet2D(img_bw, i, j).val[0];
+            if (val == 0.0) {
+                lenghtsTop++; 
+            }
+        }
+        if (lenghtsTop == 0) {
+            startY = i;
+            break;
+        }
+    }
+    
+    for (int i = source->height /2 ; i < source->height; i++) {
+        int lenghtsBottom = 0;
+        for (int j = 0 ; j < source->width; j++) {
+            double val = cvGet2D(img_bw, i, j).val[0];
+            if (val == 0.0) {
+                lenghtsBottom++; 
+            }
+        }
+        if (lenghtsBottom == 0) {
+            stopY = i;
+            break;
+        }
+    }
+    CvRect rect = cvRect(0, startY, source->width, stopY - startY);
+    IplImage *cropped_dest = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
+    GetSubImage(img_bw, cropped_dest, rect);
+    return cropped_dest;
+}
 void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]) {
 
     int countOfSquares = 0;
