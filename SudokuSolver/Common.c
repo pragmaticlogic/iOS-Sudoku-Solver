@@ -312,13 +312,82 @@ void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
     }
 }
 
-
 IplImage* cropImage(IplImage *source) {
+    int startY = 0, stopY = source -> height, startX = 0, stopX = source->width;
+    
+    //top
+    for (int i = 0 ; i < source->height / 2; i++) {
+        int lenghtsTop = 0;
+        for (int j = 0 ; j < source->width; j++) {
+            double val = cvGet2D(source, i, j).val[0];
+            if (val == 0.0) {
+                lenghtsTop++; 
+            }
+        }
+        if (lenghtsTop != 0) {
+            startY = i;
+            break;
+        }
+    }
+//    
+    //bottom
+    for (int i = source->height - 1 ; i > source->height /2; i--) {
+        int lenghtsBottom = 0;
+        for (int j = 0 ; j < source->width; j++) {
+            double val = cvGet2D(source, i, j).val[0];
+            if (val == 0.0) {
+                lenghtsBottom++; 
+            }
+        }
+        if (lenghtsBottom != 0) {
+            stopY = i;
+            break;
+        }
+    }
+    
+    //left
+    for (int i = 0 ; i < source->width / 2; i++) {
+        int lenghtsLeft = 0;
+        for (int j = 0 ; j < source->height; j++) {
+            double val = cvGet2D(source, j, i).val[0];
+            if (val == 0.0) {
+                lenghtsLeft++; 
+            }
+        }
+        if (lenghtsLeft != 0) {
+            startX = i;
+            break;
+        }
+    }
+    
+    //right
+    for (int i = source->width - 1; i > source->width / 2; i--) {
+        int lenghtsRight = 0;
+        for (int j = 0 ; j < source->height; j++) {
+            double val = cvGet2D(source, j, i).val[0];
+            if (val == 0.0) {
+                lenghtsRight++; 
+            }
+        }
+        if (lenghtsRight != 0) {
+            stopX = i;
+            break;
+        }
+    }
+    CvRect rect = cvRect(startX, startY, stopX - startX, stopY - startY);
+    IplImage *cropped_dest = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
+    GetSubImage(source, cropped_dest, rect);
+    return cropped_dest;
+
+}
+
+IplImage* cropGarbageFromTopAndBottom(IplImage *source) {
     IplImage *img_bw = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
     cvCvtColor(source, img_bw, CV_RGB2GRAY);
 
     int startY = 0, stopY = source -> height;
     
+    //top
     for (int i = 0 ; i < source->height / 2; i++) {
         int lenghtsTop = 0;
         for (int j = 0 ; j < source->width; j++) {
@@ -333,6 +402,7 @@ IplImage* cropImage(IplImage *source) {
         }
     }
     
+    //bottom
     for (int i = source->height /2 ; i < source->height; i++) {
         int lenghtsBottom = 0;
         for (int j = 0 ; j < source->width; j++) {
@@ -346,6 +416,7 @@ IplImage* cropImage(IplImage *source) {
             break;
         }
     }
+    
     CvRect rect = cvRect(0, startY, source->width, stopY - startY);
     IplImage *cropped_dest = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
     GetSubImage(img_bw, cropped_dest, rect);

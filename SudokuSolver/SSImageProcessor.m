@@ -148,12 +148,16 @@ extern "C" {
             IplImage *dest = cvCreateImage(cvSize(rect.width, rect.height), IPL_DEPTH_8U, 3);
             GetSubImage(square_rgb, dest, rect);
             
-            IplImage *img_bw_src = cropImage(dest);
-            IplImage *resultImage = cvCreateImage(cvGetSize(img_bw_src), IPL_DEPTH_8U, 3);
+            IplImage *img_bw_src = cropGarbageFromTopAndBottom(dest);
+            IplImage *croppedImage = cropImage(img_bw_src);
+            IplImage *resultImage = cvCreateImage(cvGetSize(croppedImage), IPL_DEPTH_8U, 3);
         
-            cvCvtColor(img_bw_src, resultImage, CV_GRAY2RGB);
-                
-            UIImage *image = [UIImage imageFromIplImage:resultImage];
+            cvCvtColor(croppedImage, resultImage, CV_GRAY2RGB);
+            
+            IplImage *resizedImage = cvCreateImage(cvSize(16, 16), IPL_DEPTH_8U, 3);
+            cvResize(resultImage, resizedImage, CV_INTER_LINEAR);
+
+            UIImage *image = [UIImage imageFromIplImage:resizedImage];
             [result addObject:image];
         }
     }

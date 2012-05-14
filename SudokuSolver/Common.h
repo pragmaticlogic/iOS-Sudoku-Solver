@@ -20,6 +20,7 @@ IplImage *rotateImage(const IplImage *img, int angle);
 CvPoint intersectionBetweenLines(CvPoint p1, CvPoint p2, CvPoint p3, CvPoint p4);
 void detectSudokuBoundingBox(IplImage *image, CvPoint box[]);
 IplImage* cropImage(IplImage *source);
+IplImage* cropGarbageFromTopAndBottom(IplImage *source);
 void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]);
 void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]);
 void thinImage(IplImage *source, IplImage *destination);
