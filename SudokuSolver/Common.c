@@ -15,6 +15,16 @@
 #define YES 1
 #define NO 0
 
+typedef enum {
+    kPixelTypeEnd,
+    kPixelTypeNormal,
+    kPixelTypeArc,
+    kPixelTypeNode3,
+    kPixelTypeNode4,
+    kPixelTypeNode5,
+    kPixelTypeUndefined,
+} kPixelType;
+
 unsigned char firstCondition(IplImage *source, int i, int j);
 unsigned char secondCondition(IplImage *source, int i, int j);
 unsigned char thirdCondition(IplImage *source, int i, int j);
@@ -584,4 +594,83 @@ unsigned char fifthCondition(IplImage *source, int i, int j) {
 
 unsigned char sixthCondition(IplImage *source, int i, int j) {
     return p2p4Check(source, i, j, -1, 0);
+}
+
+
+kPixelType determinePixelType(int matrix[20][20], int m, int n) {
+    
+    kPixelType type;
+    int countOfEightLinkedNeighbours = 0;
+    for (int k = -1; k < 2; k++) {
+        for (int l = -1; l < 2; l++) { {
+            if (k == 0 && l == 0) { continue; }
+            if (matrix[m + k ][n + l] == 1) {
+                countOfEightLinkedNeighbours++;
+            }
+        }
+        }
+    }
+    switch (countOfEightLinkedNeighbours) {
+        case 1:
+            type = kPixelTypeEnd;
+            break;
+        case 2:
+            type = kPixelTypeNormal;
+            break;
+        case 3:
+            type = kPixelTypeNode3;
+            break;
+        case 4:
+            type = kPixelTypeNode4;
+            break;
+        case 5:
+            type = kPixelTypeNode5;
+            break;
+        default:
+            type = kPixelTypeUndefined;
+            break;
+    }
+    return type;
+}
+
+int SSRezognizeNumericCharacter(IplImage *source) {
+    int result = 0;
+#define SIZE 20
+    int matrix[SIZE][SIZE];
+    SSDebugOutput(source);
+    for (int i = 0 ; i < source->height; i++) {
+        for (int j = 0 ; j < source->width; j++) {
+            matrix[i][j] = cvGet2D(source, i, j).val[0] > 0 ? 0: 1;
+        }
+    }
+    
+    for (int i = 1 ; i < SIZE - 1; i++) {
+        for (int j = 1 ; j < SIZE - 1; j++) {
+            
+            if (matrix[i][j] == 1) {
+                kPixelType type = determinePixelType(matrix, i, j);
+                if (type == kPixelTypeEnd) {
+                    printf("end pixel found\n");
+                }
+                if (type == kPixelTypeNode5) {
+                    printf("node5 pixel found\n");
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+void SSDebugOutput(IplImage *source) {
+    printf ("-----------------\n");
+
+    for (int i = 0 ; i < source->height; i++) {
+        for (int j = 0 ; j < source->width; j++) {
+            int val = cvGet2D(source, i, j).val[0];
+            printf ("%d", val > 0 ? 0 : 1);
+        }
+        printf ("\n");
+    }
+    printf ("-----------------\n");
 }

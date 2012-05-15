@@ -42,6 +42,18 @@
     for (int i = 0; i < [self.itemsToDisplay count]; i++) {
         UIImageView *imgView = (UIImageView *)[self.view viewWithTag:i + 100];
         [imgView setImage:[self.itemsToDisplay objectAtIndex:i]];
+        
+        //debug
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:imgView.frame];
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor redColor];
+        label.text = [NSString stringWithFormat:@"%d",[imgProcessor recognizeDigit:[self.itemsToDisplay objectAtIndex:i]]];
+        [self.view addSubview:label];
+         NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        NSData *data = UIImagePNGRepresentation(imgView.image);
+        [data writeToFile:[NSString stringWithFormat:@"%@/%d.png", documentsDirectory,i] atomically:YES];
+        //debug
     }
 }
 

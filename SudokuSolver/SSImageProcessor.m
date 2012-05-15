@@ -150,17 +150,23 @@ extern "C" {
             
             IplImage *img_bw_src = cropGarbageFromTopAndBottom(dest);
             IplImage *croppedImage = cropImage(img_bw_src);
-            IplImage *resultImage = cvCreateImage(cvGetSize(croppedImage), IPL_DEPTH_8U, 3);
         
-            //IplImage *thinned_image = cvCreateImage(cvGetSize(croppedImage), IPL_DEPTH_8U, 1);
             croppedImage = zhangSuenThinning(croppedImage);
             
+            IplImage *resultImage = cvCreateImage(cvGetSize(croppedImage), IPL_DEPTH_8U, 3);
             cvCvtColor(croppedImage, resultImage, CV_GRAY2RGB);
+            
+             SSDebugOutput(resultImage);
             
 #define CROPPED_SIZE 20
             
             IplImage *resizedImage = cvCreateImage(cvSize(CROPPED_SIZE, CROPPED_SIZE), IPL_DEPTH_8U, 3);
-            cvResize(resultImage, resizedImage, CV_INTER_LINEAR);
+            cvResize(resultImage, resizedImage, CV_INTER_NN);
+            
+            
+            IplImage *doubleThinnedImage = zhangSuenThinning(resizedImage);
+            //SSDebugOutput(resizedImage);
+            SSRezognizeNumericCharacter(resizedImage);
             
             UIImage *thinned = [UIImage imageFromIplImage:resizedImage];
             [result addObject:thinned];
@@ -187,7 +193,7 @@ extern "C" {
     UIImage *image = [self detectBoundingRectangle:[UIImage imageFromIplImage:img_rgb]];
      
     img_rgb = [image IplImage];
-    
+
     for (int i = 0; i < lines->total; i++ ){
         CvPoint* line = (CvPoint*)cvGetSeqElem(lines, i);
         if ((line[0].y < sudokuFrame[0].y || line[1].y < sudokuFrame[0].y || line[0].y > sudokuFrame[1].y || line[1].y > sudokuFrame[1].y) ||
@@ -212,15 +218,18 @@ extern "C" {
     return [UIImage imageFromIplImage:onlySudokuBoxImage];    
 }
 
+
 - (int)recognizeDigit:(UIImage *)source {
     IplImage *img = [source IplImage];
     IplImage *img_bw = cvCreateImage(cvGetSize(img),IPL_DEPTH_8U,1);
+    
     cvCvtColor(img, img_bw, CV_RGB2GRAY);
+    cvThreshold(img_bw, img_bw, 250, 0, CV_THRESH_TOZERO);
 
     int horizCount = 0;
     int vertCount = 0;
     
-    int frameSize = 6;
+    int frameSize = img_bw->width;
     
     int startX = img_bw -> width / 2 - frameSize/2;
     
@@ -243,7 +252,7 @@ extern "C" {
     if (horizCount == 0 && vertCount == 0) {
         return 0;
     }
-
+        
     return 1;
 }
 @end

@@ -62,10 +62,8 @@ void thin_b(int image[IMAGE_SIZE][IMAGE_SIZE], int nn,int mm) {
 	int i,j, cont, br,ar,p1,p2, t1a();
 	int a[8];
     
-	printf ("Thinning algorithm: CACM 1984 march (Zhang and Suen)	\n");
 	cont = 1;
 	while (cont) {
-		printf ("+\n");
 		cont = 0;
         
         /*	Sub-iteration 1: */

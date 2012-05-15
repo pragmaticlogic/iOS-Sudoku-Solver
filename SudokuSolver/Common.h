@@ -24,3 +24,7 @@ IplImage* cropGarbageFromTopAndBottom(IplImage *source);
 void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]);
 void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]);
 void thinImage(IplImage *source, IplImage *destination);
+
+void SSDebugOutput(IplImage *source);
+
+int SSRezognizeNumericCharacter(IplImage *source);
