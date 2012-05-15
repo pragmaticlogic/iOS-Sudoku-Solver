@@ -23,6 +23,7 @@
 		03D1408A148E0F2500A78781 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 03D14089148E0F2500A78781 /* libz.dylib */; };
 		03D14090148E183100A78781 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D1408F148E183100A78781 /* UIImage+Additions.m */; };
 		03D14097148E5E2800A78781 /* Common.c in Sources */ = {isa = PBXBuildFile; fileRef = 03D14096148E5E2800A78781 /* Common.c */; };
+		AF4FB02215627D5F00C2CFAE /* Zhang-Suen.c in Sources */ = {isa = PBXBuildFile; fileRef = AF4FB02115627D5F00C2CFAE /* Zhang-Suen.c */; };
 		AF873AB9154F223C0044C84B /* SplitSudokuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF873AB7154F223C0044C84B /* SplitSudokuViewController.m */; };
 		AF873ABA154F223C0044C84B /* SplitSudokuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF873AB8154F223C0044C84B /* SplitSudokuViewController.xib */; };
 		AF9C2314152323DC00120079 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AF9C2313152323DC00120079 /* 3.jpg */; };
@@ -59,6 +60,8 @@
 		03D1408F148E183100A78781 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Additions.m"; sourceTree = "<group>"; };
 		03D14096148E5E2800A78781 /* Common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Common.c; sourceTree = "<group>"; };
 		03D14098148E5E3900A78781 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		AF4FB01F15627D5300C2CFAE /* Zhang-Suen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Zhang-Suen.h"; sourceTree = "<group>"; };
+		AF4FB02115627D5F00C2CFAE /* Zhang-Suen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = "Zhang-Suen.c"; sourceTree = "<group>"; };
 		AF873AB6154F223C0044C84B /* SplitSudokuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplitSudokuViewController.h; sourceTree = "<group>"; };
 		AF873AB7154F223C0044C84B /* SplitSudokuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SplitSudokuViewController.m; sourceTree = "<group>"; };
 		AF873AB8154F223C0044C84B /* SplitSudokuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SplitSudokuViewController.xib; sourceTree = "<group>"; };
@@ -184,6 +187,8 @@
 				AFCDBF0B152033E70028373E /* SSSolver.c */,
 				AFCDBF2915208AF20028373E /* SSImageProcessor.h */,
 				AFCDBF2A15208AF20028373E /* SSImageProcessor.m */,
+				AF4FB01F15627D5300C2CFAE /* Zhang-Suen.h */,
+				AF4FB02115627D5F00C2CFAE /* Zhang-Suen.c */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -279,6 +284,7 @@
 				AFCDBF2B15208AF20028373E /* SSImageProcessor.m in Sources */,
 				AF873AB9154F223C0044C84B /* SplitSudokuViewController.m in Sources */,
 				AFD892C71556958500EBDF60 /* ResultViewController.m in Sources */,
+				AF4FB02215627D5F00C2CFAE /* Zhang-Suen.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

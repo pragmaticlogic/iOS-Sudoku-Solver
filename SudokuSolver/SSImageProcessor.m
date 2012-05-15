@@ -13,6 +13,7 @@
 extern "C" {
 #endif
 #import "Common.h"
+#import "Zhang-Suen.h"
 #ifdef __cplusplus
 }
 #endif
@@ -66,8 +67,7 @@ extern "C" {
     IplImage *img_rgb = [source IplImage];
     IplImage* im_bw = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
     IplImage* im_bw_thinned = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
-    cvCopy(im_bw, im_bw_thinned, NULL);
-    thinImage(im_bw, im_bw_thinned);
+    im_bw_thinned = zhangSuenThinning(im_bw);
     IplImage* color_dst = cvCreateImage( cvGetSize(im_bw), IPL_DEPTH_8U, 3);
     cvCvtColor(im_bw_thinned, color_dst, CV_GRAY2RGB);
     return [UIImage imageFromIplImage:color_dst];
@@ -152,13 +152,18 @@ extern "C" {
             IplImage *croppedImage = cropImage(img_bw_src);
             IplImage *resultImage = cvCreateImage(cvGetSize(croppedImage), IPL_DEPTH_8U, 3);
         
+            //IplImage *thinned_image = cvCreateImage(cvGetSize(croppedImage), IPL_DEPTH_8U, 1);
+            croppedImage = zhangSuenThinning(croppedImage);
+            
             cvCvtColor(croppedImage, resultImage, CV_GRAY2RGB);
             
-            IplImage *resizedImage = cvCreateImage(cvSize(16, 16), IPL_DEPTH_8U, 3);
+#define CROPPED_SIZE 20
+            
+            IplImage *resizedImage = cvCreateImage(cvSize(CROPPED_SIZE, CROPPED_SIZE), IPL_DEPTH_8U, 3);
             cvResize(resultImage, resizedImage, CV_INTER_LINEAR);
-
-            UIImage *image = [UIImage imageFromIplImage:resizedImage];
-            [result addObject:image];
+            
+            UIImage *thinned = [UIImage imageFromIplImage:resizedImage];
+            [result addObject:thinned];
         }
     }
     return result;

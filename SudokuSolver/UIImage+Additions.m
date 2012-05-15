@@ -35,9 +35,7 @@
 }
 
 // NOTE You should convert color mode as RGB before passing to this function
-+ (UIImage *)imageFromIplImage:(IplImage *)image 
-{
-	NSLog(@"IplImage (%d, %d) %d bits by %d channels, %d bytes/row %s", image->width, image->height, image->depth, image->nChannels, image->widthStep, image->channelSeq);
++ (UIImage *)imageFromIplImage:(IplImage *)image  {
     
 	CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 	NSData *data = [NSData dataWithBytes:image->imageData length:image->imageSize];

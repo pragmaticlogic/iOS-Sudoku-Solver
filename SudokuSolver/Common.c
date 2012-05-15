@@ -316,7 +316,7 @@ IplImage* cropImage(IplImage *source) {
     int startY = 0, stopY = source -> height, startX = 0, stopX = source->width;
     
     //top
-    for (int i = 0 ; i < source->height / 2; i++) {
+    for (int i = 1 ; i < source->height / 2; i++) {
         int lenghtsTop = 0;
         for (int j = 0 ; j < source->width; j++) {
             double val = cvGet2D(source, i, j).val[0];
@@ -325,13 +325,13 @@ IplImage* cropImage(IplImage *source) {
             }
         }
         if (lenghtsTop != 0) {
-            startY = i;
+            startY = i - 1;
             break;
         }
     }
 //    
     //bottom
-    for (int i = source->height - 1 ; i > source->height /2; i--) {
+    for (int i = source->height - 2 ; i > source->height /2; i--) {
         int lenghtsBottom = 0;
         for (int j = 0 ; j < source->width; j++) {
             double val = cvGet2D(source, i, j).val[0];
@@ -340,13 +340,13 @@ IplImage* cropImage(IplImage *source) {
             }
         }
         if (lenghtsBottom != 0) {
-            stopY = i;
+            stopY = i + 1;
             break;
         }
     }
     
     //left
-    for (int i = 0 ; i < source->width / 2; i++) {
+    for (int i = 1 ; i < source->width / 2; i++) {
         int lenghtsLeft = 0;
         for (int j = 0 ; j < source->height; j++) {
             double val = cvGet2D(source, j, i).val[0];
@@ -355,13 +355,13 @@ IplImage* cropImage(IplImage *source) {
             }
         }
         if (lenghtsLeft != 0) {
-            startX = i;
+            startX = i - 1;
             break;
         }
     }
     
     //right
-    for (int i = source->width - 1; i > source->width / 2; i--) {
+    for (int i = source->width - 3; i > source->width / 2; i--) {
         int lenghtsRight = 0;
         for (int j = 0 ; j < source->height; j++) {
             double val = cvGet2D(source, j, i).val[0];
@@ -370,7 +370,7 @@ IplImage* cropImage(IplImage *source) {
             }
         }
         if (lenghtsRight != 0) {
-            stopX = i;
+            stopX = i + 1;
             break;
         }
     }
@@ -388,7 +388,7 @@ IplImage* cropGarbageFromTopAndBottom(IplImage *source) {
     int startY = 0, stopY = source -> height;
     
     //top
-    for (int i = 0 ; i < source->height / 2; i++) {
+    for (int i = 1 ; i < source->height / 2; i++) {
         int lenghtsTop = 0;
         for (int j = 0 ; j < source->width; j++) {
             double val = cvGet2D(img_bw, i, j).val[0];
@@ -403,7 +403,7 @@ IplImage* cropGarbageFromTopAndBottom(IplImage *source) {
     }
     
     //bottom
-    for (int i = source->height /2 ; i < source->height; i++) {
+    for (int i = source->height /2 ; i < source->height - 1; i++) {
         int lenghtsBottom = 0;
         for (int j = 0 ; j < source->width; j++) {
             double val = cvGet2D(img_bw, i, j).val[0];
@@ -412,7 +412,7 @@ IplImage* cropGarbageFromTopAndBottom(IplImage *source) {
             }
         }
         if (lenghtsBottom == 0) {
-            stopY = i;
+            stopY = i + 1;
             break;
         }
     }
@@ -447,10 +447,9 @@ void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]) {
 
     int prevLineY = start;
 
-    int magicCropGap = 5;
     for (int i = start ; i < stop; i++) {
         if (i - prevLineY > (stop-start)/ 9) {
-            CvRect rect = cvRect(0, prevLineY, source->width, i - prevLineY - magicCropGap);
+            CvRect rect = cvRect(0, prevLineY, source->width, i - prevLineY);
             prevLineY = i;
             IplImage *resultImage = cvCreateImage(cvSize(rect.width, rect.height),IPL_DEPTH_8U,1);
             GetSubImage(source, resultImage, rect);
@@ -468,8 +467,8 @@ void thinImage(IplImage *source, IplImage *destination) {
     for (int i = 0; i < 6; i++) {
         //cleanup
         
-        for (int i = 5; i < source->height - 5; i++) {
-            for (int j = 5; j < source->width - 5; j++) {
+        for (int i = 1; i < source->height - 2; i++) {
+            for (int j = 1; j < source->width - 2; j++) {
                 if (cvGet2D(destination, i, j).val[0] == BLACK_PIXEL) {
                     if (firstCondition(destination, i, j) &&
                         secondCondition(destination, i, j) &&
@@ -546,6 +545,9 @@ unsigned char p2p4Check(IplImage *source, int i, int j, int k, int l) {
 }
 
 unsigned char firstCondition(IplImage *source, int i, int j) {
+//    if (i == 1 || j == 1) {
+//        return YES;
+//    }
     int countOfFourLinkedSibilings = 0;
     if (cvGet2D(source, i, j + 1).val[0] == WHITE_PIXEL) {
         countOfFourLinkedSibilings++;
