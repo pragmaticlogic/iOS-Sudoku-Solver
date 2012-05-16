@@ -88,12 +88,6 @@ extern "C" {
 
 
 - (IplImage *)closeImage:(IplImage *)source {    
-    int radius = 3;
-    IplConvKernel* Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_RECT, NULL);
-    cvErode(source, source, Kern, 1);
-    cvDilate(source, source, Kern, 1);
-    
-    cvReleaseStructuringElement(&Kern);
 
     return source;
 }
@@ -133,7 +127,6 @@ extern "C" {
 - (NSArray *)splitImages {
     
     IplImage *stripes[9];
-    IplImage *boldImage = [self closeImage:sudokuImage];
     splitSudokuIntoVerticalStripes(sudokuImage, stripes);
     
     for (int i = 0; i < 9; i++) {

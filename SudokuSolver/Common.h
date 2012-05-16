@@ -44,6 +44,7 @@ void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]);
 void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]);
 void thinImage(IplImage *source, IplImage *destination);
 
+IplImage *closeImage(IplImage *source);
 void SSDebugOutput(IplImage *source);
 
 charStruct SSRezognizeNumericCharacter(IplImage *source);

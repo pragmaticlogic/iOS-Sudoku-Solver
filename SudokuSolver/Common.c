@@ -265,8 +265,10 @@ void GetSubImage(IplImage *source, IplImage *dest, CvRect roiRect) {
 void splitSudokuIntoVerticalStripes(IplImage *source, IplImage *stripes[9]) {
     IplImage *img_bw = cvCreateImage(cvGetSize(source),IPL_DEPTH_8U,1);
     cvCvtColor(source, img_bw, CV_RGB2GRAY);
-    
+            
     cvThreshold(img_bw, img_bw, 125, 0, CV_THRESH_TOZERO);
+
+    //IplImage *closedImage = closeImage(img_bw);
 
     int cutThreshold = source->height * 0.3;
     int averageRowWidth = source->width / 9 * 0.7;
@@ -424,7 +426,7 @@ IplImage* cropGarbageFromTopAndBottom(IplImage *source) {
     return cropped_dest;
 }
 void splitVerticalLineIntoDigits(IplImage *source, IplImage *array[9]) {
-
+    
     int countOfSquares = 0;
     
     int start = 0;
@@ -704,6 +706,15 @@ charStruct SSRezognizeNumericCharacter(IplImage *source) {
     return result;
 }
 
+IplImage *closeImage(IplImage *source) {
+    int radius = 3;
+    IplConvKernel* Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_RECT, NULL);
+    cvErode(source, source, Kern, 1);
+    cvDilate(source, source, Kern, 1);
+    
+    cvReleaseStructuringElement(&Kern);
+    return source;
+}
 void SSDebugOutput(IplImage *source) {
     printf ("-----------------\n");
 
