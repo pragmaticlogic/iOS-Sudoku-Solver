@@ -42,8 +42,6 @@ IplImage *zhangSuenThinning(IplImage *source) {
             imgMatrix[i][j] = val > 0 ? 0 : 1;
         }
     }
-    //iputim(imgMatrix, source ->width, source->height);
-    
     thin_b(imgMatrix, source->width, source->height);
     
     for (int i = 0 ; i < source->width; i++) {

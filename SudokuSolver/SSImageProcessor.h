@@ -13,7 +13,8 @@
 - (UIImage *)detectBoundingRectangle:(UIImage *)source;
 - (UIImage *)rotateImage:(UIImage *)source;
 - (UIImage *)detectLines:(UIImage *)source;
-- (int)recognizeDigit:(UIImage *)source;
+- (NSArray *)recognizedSymbols;
 - (UIImage *)thinImage:(UIImage *)source;
+
 @property (nonatomic, readonly) NSArray *splitImages;
 @end

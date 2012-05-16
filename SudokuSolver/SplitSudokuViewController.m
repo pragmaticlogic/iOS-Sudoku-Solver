@@ -39,6 +39,9 @@
         }
         yOffset += (offset + size);
     }
+    
+    NSArray *recognizedDigits = [imgProcessor recognizedSymbols];
+    
     for (int i = 0; i < [self.itemsToDisplay count]; i++) {
         UIImageView *imgView = (UIImageView *)[self.view viewWithTag:i + 100];
         [imgView setImage:[self.itemsToDisplay objectAtIndex:i]];
@@ -48,7 +51,7 @@
         UILabel *label = [[UILabel alloc] initWithFrame:imgView.frame];
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor redColor];
-        label.text = [NSString stringWithFormat:@"%d",[imgProcessor recognizeDigit:[self.itemsToDisplay objectAtIndex:i]]];
+        label.text = [NSString stringWithFormat:@"%d",[[recognizedDigits objectAtIndex:i] intValue]];
         [self.view addSubview:label];
          NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
         NSData *data = UIImagePNGRepresentation(imgView.image);
@@ -64,7 +67,7 @@
 - (IBAction)onRecognizeTap:(id)sender {
     self.sudokuDigits = [NSMutableArray array];
     for (UIImage *img in itemsToDisplay) {
-        int value = [self.imgProcessor recognizeDigit:img];
+        int value = 1;//[self.imgProcessor recognizeDigit:img];
         [self.sudokuDigits addObject:[NSNumber numberWithInt:value]];
     }
     ResultViewController *rVC = [[ResultViewController alloc] init];

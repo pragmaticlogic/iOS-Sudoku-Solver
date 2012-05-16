@@ -22,6 +22,7 @@ extern "C" {
     CvPoint sudokuFrame[2];
     IplImage *squares[9][9];
     IplImage *sudokuImage;
+    charStruct sudokuChars[9][9];
 }
 
 @property (nonatomic, retain) UIImage *image;
@@ -87,8 +88,8 @@ extern "C" {
 
 
 - (IplImage *)closeImage:(IplImage *)source {    
-    int radius = 1;
-    IplConvKernel* Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_ELLIPSE, NULL);
+    int radius = 3;
+    IplConvKernel* Kern = cvCreateStructuringElementEx(radius*2+1, radius*2+1, radius, radius, CV_SHAPE_RECT, NULL);
     cvErode(source, source, Kern, 1);
     cvDilate(source, source, Kern, 1);
     
@@ -132,6 +133,7 @@ extern "C" {
 - (NSArray *)splitImages {
     
     IplImage *stripes[9];
+    IplImage *boldImage = [self closeImage:sudokuImage];
     splitSudokuIntoVerticalStripes(sudokuImage, stripes);
     
     for (int i = 0; i < 9; i++) {
@@ -144,7 +146,8 @@ extern "C" {
         for (int j = 0; j < 9; j++) {            
             IplImage *square_rgb = cvCreateImage(cvGetSize(squares[j][i]), IPL_DEPTH_8U, 3);
             cvCvtColor(squares[j][i], square_rgb, CV_GRAY2RGB);
-            CvRect rect = cvRect(0.2 * square_rgb->width/2, 0.2 * square_rgb->height/2, square_rgb->width *0.8, square_rgb->height * 0.8);
+            static float cropRatio = 0.9f;
+            CvRect rect = cvRect((1 - cropRatio) * square_rgb->width/2, (1-cropRatio) * square_rgb->height/2, square_rgb->width *cropRatio, square_rgb->height * cropRatio);
             IplImage *dest = cvCreateImage(cvSize(rect.width, rect.height), IPL_DEPTH_8U, 3);
             GetSubImage(square_rgb, dest, rect);
             
@@ -153,22 +156,21 @@ extern "C" {
         
             croppedImage = zhangSuenThinning(croppedImage);
             
-            IplImage *resultImage = cvCreateImage(cvGetSize(croppedImage), IPL_DEPTH_8U, 3);
-            cvCvtColor(croppedImage, resultImage, CV_GRAY2RGB);
+            #define CROPPED_SIZE 20
             
-             SSDebugOutput(resultImage);
-            
-#define CROPPED_SIZE 20
-            
-            IplImage *resizedImage = cvCreateImage(cvSize(CROPPED_SIZE, CROPPED_SIZE), IPL_DEPTH_8U, 3);
-            cvResize(resultImage, resizedImage, CV_INTER_NN);
-            
-            
-            IplImage *doubleThinnedImage = zhangSuenThinning(resizedImage);
+            IplImage *resizedImage = cvCreateImage(cvSize(CROPPED_SIZE, CROPPED_SIZE), IPL_DEPTH_8U, 1);
+            cvResize(croppedImage, resizedImage, CV_INTER_NN);
+
+            resizedImage = zhangSuenThinning(resizedImage);
             //SSDebugOutput(resizedImage);
-            SSRezognizeNumericCharacter(resizedImage);
+            sudokuChars[i][j] = SSRezognizeNumericCharacter(resizedImage);
             
-            UIImage *thinned = [UIImage imageFromIplImage:resizedImage];
+            IplImage *resultImage = cvCreateImage(cvGetSize(resizedImage), IPL_DEPTH_8U, 3);
+            cvCvtColor(resizedImage, resultImage, CV_GRAY2RGB);
+            
+             //SSDebugOutput(resultImage);
+            
+            UIImage *thinned = [UIImage imageFromIplImage:resultImage];
             [result addObject:thinned];
         }
     }
@@ -177,37 +179,8 @@ extern "C" {
 
 - (UIImage *)detectLines:(UIImage *)source {
     IplImage *img_rgb = [source IplImage];
-    IplImage *img_bw = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
-    IplImage* dst = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,1);
-    IplImage* color_dst = cvCreateImage(cvGetSize(img_rgb),IPL_DEPTH_8U,3);
-    
-    cvCvtColor(img_rgb, img_bw, CV_RGB2GRAY);
-    cvCanny( img_bw, dst, 50, 100, 3 );
-    cvCvtColor( dst, color_dst, CV_GRAY2RGB);
-
-    CvMemStorage* storage = cvCreateMemStorage(0);
-    CvSeq* lines = 0;
-    
-    lines = cvHoughLines2( dst, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 50, 50, 10);
-    
     UIImage *image = [self detectBoundingRectangle:[UIImage imageFromIplImage:img_rgb]];
-     
     img_rgb = [image IplImage];
-
-    for (int i = 0; i < lines->total; i++ ){
-        CvPoint* line = (CvPoint*)cvGetSeqElem(lines, i);
-        if ((line[0].y < sudokuFrame[0].y || line[1].y < sudokuFrame[0].y || line[0].y > sudokuFrame[1].y || line[1].y > sudokuFrame[1].y) ||
-            ((line[0].x < sudokuFrame[0].x || line[1].x < sudokuFrame[0].x || line[0].x > sudokuFrame[1].x || line[1].x > sudokuFrame[1].x))) {
-            continue;
-        }
-        if (sqrtf(powf(line[1].x - line[0].x, 2) + powf(line[1].y - line[0].y, 2)) < img_rgb->width * 0.4) {
-            continue;
-        }
-        cvLine(img_rgb, line[0], line[1], CV_RGB(255,0,255), 1, CV_AA, 0 );
-    }
-
-    cvReleaseMemStorage(&storage);
-    cvReleaseImage(&dst);
     
     int boxWidth = sudokuFrame[1].x - sudokuFrame[0].x;
     int boxHeight = sudokuFrame[1].y - sudokuFrame[0].y;
@@ -218,41 +191,14 @@ extern "C" {
     return [UIImage imageFromIplImage:onlySudokuBoxImage];    
 }
 
-
-- (int)recognizeDigit:(UIImage *)source {
-    IplImage *img = [source IplImage];
-    IplImage *img_bw = cvCreateImage(cvGetSize(img),IPL_DEPTH_8U,1);
-    
-    cvCvtColor(img, img_bw, CV_RGB2GRAY);
-    cvThreshold(img_bw, img_bw, 250, 0, CV_THRESH_TOZERO);
-
-    int horizCount = 0;
-    int vertCount = 0;
-    
-    int frameSize = img_bw->width;
-    
-    int startX = img_bw -> width / 2 - frameSize/2;
-    
-    for (int i = startX; i < startX + frameSize; i++) {
-        double val = cvGet2D(img_bw, img_bw->height /2, i).val[0];
-        if (val == 0.0) {
-            horizCount++;
+- (NSArray *)recognizedSymbols {
+    NSMutableArray *arr = [NSMutableArray array];
+    for (int i = 0; i < 9; i++) {
+        for (int j = 0; j < 9; j++) {
+            [arr addObject:[NSNumber numberWithInt:sudokuChars[i][j].value]];
         }
     }
-    
-    int startY = img_bw -> height / 2 - frameSize/2;
-
-    for (int j = startX; j < startY + frameSize; j++) {
-        double val = cvGet2D(img_bw, j, img_bw->width /2).val[0];
-        if (val == 0.0) {
-            vertCount++;
-        }
-    }
-
-    if (horizCount == 0 && vertCount == 0) {
-        return 0;
-    }
-        
-    return 1;
+    return arr;
 }
+
 @end

@@ -14,6 +14,25 @@ typedef struct
     double r, g, b;    /* Channel intensities between 0.0 and 1.0 */
 } rgb_color;
 
+typedef enum {
+    kPixelTypeNormal,
+    kPixelTypeArc,
+    kPixelTypeEnd,
+    kPixelTypeNode3,
+    kPixelTypeNode4,
+    kPixelTypeNode5,
+    kPixelTypeUndefined,
+} kPixelType;
+
+typedef struct charStruct {
+    kPixelType features[10];
+    int value;
+    unsigned char isRecognized;
+    int g1;
+    int g2;
+    int g3;
+} charStruct;
+
 void AdaptiveThreshold(IplImage *source, IplImage *dest, int size);
 void GetSubImage(IplImage *source, IplImage *dest, CvRect roiRect);
 IplImage *rotateImage(const IplImage *img, int angle);
@@ -27,4 +46,4 @@ void thinImage(IplImage *source, IplImage *destination);
 
 void SSDebugOutput(IplImage *source);
 
-int SSRezognizeNumericCharacter(IplImage *source);
+charStruct SSRezognizeNumericCharacter(IplImage *source);

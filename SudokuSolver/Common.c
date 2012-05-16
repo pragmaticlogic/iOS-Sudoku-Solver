@@ -15,15 +15,6 @@
 #define YES 1
 #define NO 0
 
-typedef enum {
-    kPixelTypeEnd,
-    kPixelTypeNormal,
-    kPixelTypeArc,
-    kPixelTypeNode3,
-    kPixelTypeNode4,
-    kPixelTypeNode5,
-    kPixelTypeUndefined,
-} kPixelType;
 
 unsigned char firstCondition(IplImage *source, int i, int j);
 unsigned char secondCondition(IplImage *source, int i, int j);
@@ -603,7 +594,9 @@ kPixelType determinePixelType(int matrix[20][20], int m, int n) {
     int countOfEightLinkedNeighbours = 0;
     for (int k = -1; k < 2; k++) {
         for (int l = -1; l < 2; l++) { {
-            if (k == 0 && l == 0) { continue; }
+            if (k == 0 && l == 0) {
+                continue; 
+            }
             if (matrix[m + k ][n + l] == 1) {
                 countOfEightLinkedNeighbours++;
             }
@@ -633,8 +626,11 @@ kPixelType determinePixelType(int matrix[20][20], int m, int n) {
     return type;
 }
 
-int SSRezognizeNumericCharacter(IplImage *source) {
-    int result = 0;
+charStruct SSRezognizeNumericCharacter(IplImage *source) {
+    charStruct result;
+    result.g1 = 0;
+    result.g2 = 0;
+    result.g3 = 0;
 #define SIZE 20
     int matrix[SIZE][SIZE];
     SSDebugOutput(source);
@@ -644,6 +640,47 @@ int SSRezognizeNumericCharacter(IplImage *source) {
         }
     }
     
+    
+    //first zond
+    for (int i = 0; i < SIZE; i++) {
+        result.g1 += matrix[i][SIZE/2];
+    }
+    printf("g1=%d\n\n", result.g1);    
+    if (result.g1 == 0) {
+        result.value = 0;
+        return result;
+    }
+    
+    //second zond
+    
+    for (int i = 0; i < SIZE; i++) {
+        result.g2 += matrix[SIZE/4 + 1][i];
+        //matrix[SIZE/4][i] = 5;
+    }
+    
+    for (int i = 0; i < SIZE; i++) {
+        result.g3 += matrix[SIZE*3/4][i];
+        //matrix[SIZE*3/4][i] = 5;
+    }
+    
+    //third zond 
+    if (result.g1 >= 3 && result.g2 == 2 && result.g3 == 2) {
+        result.value = 8;
+        return result;
+    }
+    
+    if (result.g1 >=3 && result.g2 == 1 && result.g3 == 2) {
+        result.value = 6;
+        return result;
+    }
+    
+    if (result.g1 >=3 && result.g2 == 2 && result.g3 == 1) {
+        result.value = 9;
+        return result;
+    }
+    
+
+    
     for (int i = 1 ; i < SIZE - 1; i++) {
         for (int j = 1 ; j < SIZE - 1; j++) {
             
@@ -652,13 +689,18 @@ int SSRezognizeNumericCharacter(IplImage *source) {
                 if (type == kPixelTypeEnd) {
                     printf("end pixel found\n");
                 }
+                if (type == kPixelTypeNode4) {
+                    printf("node4 pixel found\n");
+                }
                 if (type == kPixelTypeNode5) {
                     printf("node5 pixel found\n");
                 }
+
             }
         }
     }
 
+    result.value = 1;
     return result;
 }
 
